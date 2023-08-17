@@ -1,0 +1,1 @@
+﻿{"inkVersion":21,"root":[["^x","\n","\n","^y","\n","^z ","#","^tnote:qua abbiamo una nota","/#","\n","^w","\n","done",["done",{"#f":5,"#n":"g-0"}],null],"done",{"global decl":["ev","str","^Da tradurre","/str",{"VAR=":"DoTranslate"},"str","^Da non tradurre","/str",{"VAR=":"DoNotTranslate"},"/ev","end",null],"#f":1}],"listDefs":{}}

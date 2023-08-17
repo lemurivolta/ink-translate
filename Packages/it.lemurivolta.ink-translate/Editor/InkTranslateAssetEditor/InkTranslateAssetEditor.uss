@@ -1,0 +1,43 @@
+.section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top-width: 1px;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+}
+
+.section > * {
+    margin-bottom: 5px;
+}
+
+.section.first {
+    padding-top: 0;
+    border-top-width: 0;
+}
+
+.section-title {
+    -unity-font-style: bold;
+    margin-bottom: 10px;
+}
+
+.dropdown-container {
+    flex-grow: 1;
+    background-color: rgba(0, 0, 0, 0);
+    flex-direction: row;
+    margin-left: 3px;
+    margin-right: -2px;
+}
+
+.dropdown-container ListView {
+    flex-grow: 1;
+}
+
+.unity-popup-field Label {
+    margin-right: 8px;
+}
+
+.label-correction {
+    margin-right: 6px;
+}

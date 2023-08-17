@@ -1,0 +1,21 @@
+{
+    "name": "LemuRivolta.InkTranslate.Editor",
+    "rootNamespace": "LemuRivolta.InkTranslate.Editor",
+    "references": [
+        "Ink-Libraries",
+        "LemuRivolta.InkTranslate"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "Xliff.OM.dll"
+    ],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
