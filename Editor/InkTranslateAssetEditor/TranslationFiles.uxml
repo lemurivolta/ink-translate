@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <ui:Label tabindex="-1" text="en-US" display-tooltip-when-elided="true" binding-path="LanguageCode" name="Label" style="font-size: 14px; margin-bottom: 4px;" />
+    <LemuRivolta.InkTranslate.Editor.TranslationFileElement Text="TSV file" FileType="TSV" FileFormat="TSV" name="TSVTranslationFileElement" />
+    <LemuRivolta.InkTranslate.Editor.TranslationFileElement Text="ODS file" FileType="ODS" FileFormat="ODS" name="ODSTranslationFileElement" />
+    <LemuRivolta.InkTranslate.Editor.TranslationFileElement Text="XLIFF file" FileType="XLIFF" FileFormat="XLIFF" name="XLIFFTranslationFileElement" style="margin-bottom: 5px;" />
+</ui:UXML>

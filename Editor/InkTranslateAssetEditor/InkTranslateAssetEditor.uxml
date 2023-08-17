@@ -1,0 +1,27 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="True">
+    <Style src="project://database/Packages/it.lemurivolta.ink-translate/Editor/InkTranslateAssetEditor/InkTranslateAssetEditor.uss?fileID=7433441132597879392&amp;guid=6ad5a947421bada4a98c01ac713e84d6&amp;type=3#InkTranslateAssetEditor" />
+    <ui:VisualElement class="section first" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="Configuration" display-tooltip-when-elided="true" class="section-title" />
+        <uie:PropertyField binding-path="InkFileAsset" label="Main ink file" name="MainInkFilePropertyField" />
+        <ui:DropdownField label="Main ink file language" index="-1" name="SourceLanguageDropdown" binding-path="SourceLanguageCode" />
+        <ui:VisualElement name="VisualElement" class="dropdown-container">
+            <ui:Label tabindex="-1" text="Translation languages" display-tooltip-when-elided="true" name="TranslationLanguagesLabel" class="unity-property-field__label unity-base-field__label label-correction" />
+            <ui:ListView focusable="true" name="TranslationLanguagesListView" binding-path="OtherSupportedLanguages" show-add-remove-footer="true" show-foldout-header="false" show-border="true" show-bound-collection-size="false" reorderable="false" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+    <ui:VisualElement class="section" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Label tabindex="-1" text="Settings" display-tooltip-when-elided="true" class="section-title" />
+        <uie:PropertyField binding-path="TranslationNotePrefix" label="Notes tag prefix" />
+        <uie:PropertyField binding-path="SkipStringVariables" label="Skip string variables" />
+        <uie:PropertyField binding-path="AlwaysTranslatedVariables" label="String variables to always translate" />
+        <uie:PropertyField binding-path="NeverTranslatedVariables" label="String variables never to translate" />
+    </ui:VisualElement>
+    <ui:VisualElement class="section">
+        <ui:Label tabindex="-1" text="Translation files" display-tooltip-when-elided="true" class="section-title" />
+        <ui:ListView focusable="true" name="TranslationFilesListView" binding-path="OtherSupportedLanguages" show-bound-collection-size="false" virtualization-method="DynamicHeight" reorderable="false" />
+    </ui:VisualElement>
+    <ui:VisualElement class="section" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0);">
+        <ui:Button text="Synchronize" display-tooltip-when-elided="true" name="SynchronizeButton" tooltip="&quot;Synchronize&quot; will read the ink files, merge the existing translations from TSV and XLIFF files, and then write back the TSV and XLIFF files, possibly adding new entries. Operations are never destructive." />
+    </ui:VisualElement>
+    <ui:HelpBox name="MessagesHelpBox" message-type="Warning" />
+</ui:UXML>
