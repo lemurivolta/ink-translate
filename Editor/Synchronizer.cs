@@ -51,9 +51,7 @@ namespace LemuRivolta.InkTranslate.Editor
                 string mainFilePath = Asset.InkFileAsset.GetPath().NormalizePath();
 
                 var textNodesFilter = new TextNodesFilter(Asset.SkipStringVariables);
-                var tagNodesFilter = new TagNodesFilter(
-                    mainFilePath,
-                    Asset.TranslationNotePrefix);
+                var tagNodesFilter = new TagNodesFilter(Asset.TranslationNotePrefix);
                 var filenamesTracker = new FilenamesTracker(mainFilePath);
 
                 new InkVisitorParser()
