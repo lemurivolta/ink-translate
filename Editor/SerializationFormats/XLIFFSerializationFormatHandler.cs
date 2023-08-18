@@ -4,6 +4,7 @@ using Localization.Xliff.OM.Core;
 using Localization.Xliff.OM.Serialization;
 
 using System.Linq;
+using static LemuRivolta.InkTranslate.InkTranslateAsset;
 
 namespace LemuRivolta.InkTranslate.Editor
 {
@@ -44,8 +45,15 @@ namespace LemuRivolta.InkTranslate.Editor
             return documentContent;
         }
 
-        public XLIFFSerializationFormatHandler(string languageCode, InkTranslateAsset asset)
-            : base("XLIFF", languageCode, asset) { }
+        public static XLIFFSerializationFormatHandler Factory(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages) =>
+            new(languageCode, sourceLanguageCode, translationLanguages);
+
+        public XLIFFSerializationFormatHandler(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages)
+            : base("XLIFF", languageCode, sourceLanguageCode, translationLanguages) { }
 
         protected override Dictionary<string, string> InnerRead()
         {

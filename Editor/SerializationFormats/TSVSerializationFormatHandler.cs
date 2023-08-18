@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
+
+using static LemuRivolta.InkTranslate.InkTranslateAsset;
 
 namespace LemuRivolta.InkTranslate.Editor
 {
@@ -10,11 +11,18 @@ namespace LemuRivolta.InkTranslate.Editor
     {
         public static string CreateDefaultTSVFile(
             string sourceLanguageCode,
-            InkTranslateAsset.OtherSupportedLanguage l) =>
+            OtherSupportedLanguage l) =>
             $"Key\t{sourceLanguageCode}\t{l.LanguageCode}";
 
-        public TSVSerializationFormatHandler(string languageCode, InkTranslateAsset asset)
-            : base("TSV", languageCode, asset)
+        public static TSVSerializationFormatHandler Factory(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages) =>
+            new(languageCode, sourceLanguageCode, translationLanguages);
+
+        public TSVSerializationFormatHandler(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages)
+            : base("TSV", languageCode, sourceLanguageCode, translationLanguages)
         {
         }
 

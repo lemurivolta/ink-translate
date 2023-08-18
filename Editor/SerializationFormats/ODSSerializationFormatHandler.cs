@@ -3,6 +3,7 @@ using System.IO.Compression;
 using System.Xml.Linq;
 using System.Xml;
 using System.Linq;
+using static LemuRivolta.InkTranslate.InkTranslateAsset;
 
 namespace LemuRivolta.InkTranslate.Editor
 {
@@ -26,8 +27,15 @@ namespace LemuRivolta.InkTranslate.Editor
         private readonly XNamespace nsCalcext =
             "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0";
 
-        public ODSSerializationFormatHandler(string languageCode, InkTranslateAsset asset)
-            : base("ODS", languageCode, asset) { }
+        public static ODSSerializationFormatHandler Factory(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages) =>
+            new(languageCode, sourceLanguageCode, translationLanguages);
+
+        public ODSSerializationFormatHandler(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages)
+            : base("ODS", languageCode, sourceLanguageCode, translationLanguages) { }
 
         private struct ODSReaderLine
         {
