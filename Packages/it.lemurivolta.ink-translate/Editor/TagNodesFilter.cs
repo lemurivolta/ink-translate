@@ -4,6 +4,9 @@ using Ink.Parsed;
 
 namespace LemuRivolta.InkTranslate.Editor
 {
+    /// <summary>
+    /// An ink visitor that extract all tags starting with a given prefix.
+    /// </summary>
     public class TagNodesFilter : InkVisitor
     {
         /// <summary>
@@ -14,21 +17,24 @@ namespace LemuRivolta.InkTranslate.Editor
         private FileDict<List<string>> tags;
 
         /// <summary>
-        /// The list of all tags found while parsing.
+        /// The list of all tags found while parsing, organized by (main-file relative) path
+        /// and line..
         /// </summary>
         public FileDict<List<string>> Tags => tags;
 
         private readonly string translationNotePrefix;
-        private readonly string mainFilePath;
+        private string mainFilePath;
 
-        public TagNodesFilter(string mainInkFile, string translationNotePrefix)
+        public TagNodesFilter(string translationNotePrefix)
         {
-            this.mainFilePath = mainInkFile;
             this.translationNotePrefix = translationNotePrefix;
         }
 
-        public override void BeginParsing(string mainFilePath) =>
+        public override void BeginParsing(string mainFilePath)
+        {
+            this.mainFilePath = mainFilePath;
             tags = new();
+        }
 
         public override void VisitObject(Object o)
         {
@@ -46,7 +52,9 @@ namespace LemuRivolta.InkTranslate.Editor
                 t.text.StartsWith(translationNotePrefix))
             {
                 var d = o.debugMetadata;
-                tags.GetValueOrCreateDefault(d.fileName.ResolveInkFilename(mainFilePath), () => new())
+                string mainFileRelativePath =
+                    d.fileName.MakeInkPathRelative(mainFilePath);
+                tags.GetValueOrCreateDefault(mainFileRelativePath, () => new())
                     .GetValueOrCreateDefault(d.startLineNumber, () => new())
                     .Add(t.text[translationNotePrefix.Length..].Trim());
             }
