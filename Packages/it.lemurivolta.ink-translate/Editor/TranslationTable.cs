@@ -24,7 +24,7 @@ namespace LemuRivolta.InkTranslate.Editor
         public TranslationTable(
             string mainFilePath,
             string sourceLanguageCode,
-            FileLines fileLines,
+            Dictionary<string, string[]> fileContents,
             FileDict<List<Text>> textNodesByLine,
             FileDict<List<string>> tagsByFileAndLine)
         {
@@ -35,7 +35,7 @@ namespace LemuRivolta.InkTranslate.Editor
             {
                 foreach (var lineNumber in textNodesByLine[filename].Keys.OrderBy(x => x))
                 {
-                    var line = fileLines.GetFileLines(filename)[lineNumber - 1];
+                    var line = fileContents[filename][lineNumber - 1];
 
                     // sort the text nodes by start character (we have already asserted
                     // that all text nodes are in a single line)
@@ -49,7 +49,9 @@ namespace LemuRivolta.InkTranslate.Editor
                     // (skip trailing newlines and the like)
                     var startChar = firstTextNode.debugMetadata.startCharacterNumber;
                     var endChar = textNodes[^1].debugMetadata.endCharacterNumber;
-                    while (line[endChar - 2] == '\r' || line[endChar - 2] == '\n')
+                    while (line[endChar - 2] == '\r' ||
+                        line[endChar - 2] == '\n' ||
+                        char.IsWhiteSpace(line[endChar - 2]))
                     {
                         endChar--;
                     }
@@ -62,11 +64,10 @@ namespace LemuRivolta.InkTranslate.Editor
 
                     // find note tags in the current line, and remove them from the tags
                     // list so they don't get re-used
-                    var resolvedFilename = filename.ResolveInkFilename(mainFilePath);
                     List<string> tags = null;
-                    if (tagsByFileAndLine.ContainsKey(resolvedFilename))
+                    if (tagsByFileAndLine.ContainsKey(filename))
                     {
-                        var tagsByLine = tagsByFileAndLine[resolvedFilename];
+                        var tagsByLine = tagsByFileAndLine[filename];
                         if (tagsByLine.TryGetValue(lineNumber, out tags))
                         {
                             tagsByLine.Remove(lineNumber);
