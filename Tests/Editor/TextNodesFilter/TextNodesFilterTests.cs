@@ -2,16 +2,14 @@ using LemuRivolta.InkTranslate.Editor;
 
 using NUnit.Framework;
 
-using UnityEditor;
-
 public class TextNodesFilterTests
 {
-    private InkPathManager pathManager = new("/TextNodesFilter");
+    private readonly InkPathManager pathManager = new("/TextNodesFilter");
 
     [SetUp]
     public void SetUp()
     {
-        LemuRivolta.InkTranslate.Editor.Progress.ClearPhases();
+        Progress.ClearPhases();
         InkVisitorParser.PhaseParse.Register();
         InkVisitorParser.PhaseFilter.Register();
     }
