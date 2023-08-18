@@ -37,14 +37,15 @@ namespace LemuRivolta.InkTranslate.Editor
             PhaseParse.Do(0);
             BeginParsing(mainFilePath);
 
-            var text = File.ReadAllText(mainFilePath);
+            FileHandler fileHandler = new(mainFilePath, inkVisitors);
+            var text = fileHandler.LoadInkFileContents(mainFilePath);
             Compiler compiler = new(
                 text,
                 new Compiler.Options()
                 {
                     sourceFilename = mainFilePath,
                     errorHandler = ErrorHandler,
-                    fileHandler = new FileHandler(mainFilePath),
+                    fileHandler = fileHandler,
                 });
             var story = compiler.Parse();
 
@@ -91,14 +92,24 @@ namespace LemuRivolta.InkTranslate.Editor
         private class FileHandler : IFileHandler
         {
             private readonly string mainFilePath;
+            private readonly List<InkVisitor> inkVisitors;
 
-            public FileHandler(string mainFilePath)
+            public FileHandler(string mainFilePath, List<InkVisitor> inkVisitors)
             {
                 this.mainFilePath = mainFilePath;
+                this.inkVisitors = inkVisitors;
             }
 
-            public string LoadInkFileContents(string fullFilename) =>
-                File.ReadAllText(fullFilename);
+            public string LoadInkFileContents(string fullFilename)
+            {
+                var text = File.ReadAllText(fullFilename);
+                var relativePath = fullFilename.MakeInkPathRelative(mainFilePath);
+                foreach (var visitor in inkVisitors)
+                {
+                    visitor.VisitFile(relativePath);
+                }
+                return text;
+            }
 
             public string ResolveInkFilename(string includeName) =>
                 includeName.ResolveInkFilename(mainFilePath);

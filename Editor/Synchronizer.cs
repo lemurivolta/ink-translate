@@ -52,7 +52,7 @@ namespace LemuRivolta.InkTranslate.Editor
 
                 var textNodesFilter = new TextNodesFilter(Asset.SkipStringVariables);
                 var tagNodesFilter = new TagNodesFilter(Asset.TranslationNotePrefix);
-                var filenamesTracker = new FilenamesTracker(mainFilePath);
+                var filenamesTracker = new FilenamesTracker();
 
                 new InkVisitorParser()
                     .RegisterInkVisitor(textNodesFilter)
