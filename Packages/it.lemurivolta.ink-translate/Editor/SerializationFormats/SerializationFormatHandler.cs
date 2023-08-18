@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 
-using UnityEditor.VersionControl;
-
 using static LemuRivolta.InkTranslate.InkTranslateAsset;
 
 namespace LemuRivolta.InkTranslate.Editor
@@ -27,15 +25,21 @@ namespace LemuRivolta.InkTranslate.Editor
         private bool initialized = false;
         protected List<TranslationTableEntry> translationTable;
 
+        public delegate SerializationFormatHandler SerializationFormatHandlerFactory(
+            string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages);
+
         public SerializationFormatHandler(
             string formatName,
             string languageCode,
-            InkTranslateAsset asset
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages
         )
         {
             this.languageCode = languageCode;
-            this.sourceLanguageCode = asset.SourceLanguageCode;
-            this.translationLanguages = asset.OtherSupportedLanguages;
+            this.sourceLanguageCode = sourceLanguageCode;
+            this.translationLanguages = translationLanguages;
 
             PhaseRead =
                 new($"Read the {formatName} file for {languageCode}");
@@ -53,7 +57,7 @@ namespace LemuRivolta.InkTranslate.Editor
             initialized = true;
         }
 
-        protected InkTranslateAsset.OtherSupportedLanguage GetLanguageInfo()
+        protected OtherSupportedLanguage GetLanguageInfo()
         {
             if (!initialized)
             {
