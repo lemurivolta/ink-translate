@@ -2,9 +2,9 @@ using LemuRivolta.InkTranslate.Editor;
 
 using NUnit.Framework;
 
-public class FilenamesTrackerTests
+public class FileLinesTests
 {
-    private readonly InkPathManager pathManager = new("/FilenamesTracker");
+    private readonly InkPathManager pathManager = new("/FileLines");
 
     [SetUp]
     public void SetUp()
@@ -20,17 +20,26 @@ public class FilenamesTrackerTests
     [Test]
     public void TestFilesWithContent()
     {
-        FilenamesTracker filenamesTracker = new();
+        FileLines fileLines = new();
 
         new InkVisitorParser()
-            .RegisterInkVisitor(filenamesTracker)
+            .RegisterInkVisitor(fileLines)
             .WalkTree(pathManager.GetPath("/test1-main.ink"));
 
-        Assert.That(filenamesTracker.Filenames, Is.EquivalentTo(new[]
+        Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
         {
             "test1-main.ink",
             "test1-included1.ink",
             "test1-included2.ink"
+        }));
+
+        Assert.That(fileLines.FileContents["test1-main.ink"], Is.EqualTo(new string[]
+        {
+            "line main before",
+            "",
+            "INCLUDE test1-included1.ink",
+            "",
+            "line main."
         }));
     }
 
@@ -40,13 +49,13 @@ public class FilenamesTrackerTests
     [Test]
     public void TestFilesWithNoContent()
     {
-        FilenamesTracker filenamesTracker = new();
+        FileLines fileLines = new();
 
         new InkVisitorParser()
-            .RegisterInkVisitor(filenamesTracker)
+            .RegisterInkVisitor(fileLines)
             .WalkTree(pathManager.GetPath("/test2-main.ink"));
 
-        Assert.That(filenamesTracker.Filenames, Is.EquivalentTo(new[]
+        Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
         {
             "test2-main.ink",
             "test2-included1.ink",
