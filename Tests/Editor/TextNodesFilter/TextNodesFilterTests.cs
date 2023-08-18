@@ -50,14 +50,14 @@ public class TextNodesFilterTests
         var textNodes = textNodesFilter.TextNodesByLine;
         Assert.Contains(subpath, textNodes.Keys);
         var fileEntry = textNodes[subpath];
-        
+
         Assert.Contains(3, fileEntry.Keys);
         var firstLine = fileEntry[3];
         Assert.Contains(9, fileEntry.Keys);
         var secondLine = fileEntry[9];
         Assert.Contains(10, fileEntry.Keys);
         var thirdLine = fileEntry[10];
-        
+
         Assert.AreEqual(1, firstLine.Count);
         Assert.AreEqual("The first line.", firstLine[0].text);
         Assert.AreEqual(5, secondLine.Count);
@@ -102,5 +102,39 @@ public class TextNodesFilterTests
             Assert.That(varEntry.debugMetadata.startCharacterNumber,
                 Is.EqualTo(10));
         }
+    }
+
+    [Test]
+    public void TestMultipleFiles()
+    {
+        TextNodesFilter textNodesFilter = new(false);
+
+        var subpath = "multiple-files-main.ink";
+
+        new InkVisitorParser()
+            .RegisterInkVisitor(textNodesFilter)
+            .WalkTree(pathManager.GetPath("/" + subpath));
+
+        var textNodesByLine = textNodesFilter.TextNodesByLine;
+        Assert.That(textNodesByLine.Keys.Count, Is.EqualTo(2));
+        Assert.That(textNodesByLine.Keys, Is.EquivalentTo(new string[] {
+            "multiple-files-main.ink",
+            "multiple-files-included.ink"
+        }));
+        var mainLines = textNodesByLine["multiple-files-main.ink"];
+        var includedLines = textNodesByLine["multiple-files-included.ink"];
+
+        Assert.That(mainLines.Keys, Is.EquivalentTo(new int[] { 1, 5 }));
+        var line1 = mainLines[1];
+        var line3 = mainLines[5];
+        Assert.That(includedLines.Keys, Is.EquivalentTo(new int[] { 1 }));
+        var line2 = includedLines[1];
+
+        Assert.That(line1.Count, Is.EqualTo(1));
+        Assert.That(line1[0].text, Is.EqualTo("first line."));
+        Assert.That(line2.Count, Is.EqualTo(1));
+        Assert.That(line2[0].text, Is.EqualTo("second line."));
+        Assert.That(line3.Count, Is.EqualTo(1));
+        Assert.That(line3[0].text, Is.EqualTo("third line."));
     }
 }
