@@ -13,8 +13,6 @@
         <ui:Label tabindex="-1" text="Settings" display-tooltip-when-elided="true" class="section-title" />
         <uie:PropertyField binding-path="TranslationNotePrefix" label="Notes tag prefix" />
         <uie:PropertyField binding-path="SkipStringVariables" label="Skip string variables" />
-        <uie:PropertyField binding-path="AlwaysTranslatedVariables" label="String variables to always translate" />
-        <uie:PropertyField binding-path="NeverTranslatedVariables" label="String variables never to translate" />
     </ui:VisualElement>
     <ui:VisualElement class="section">
         <ui:Label tabindex="-1" text="Translation files" display-tooltip-when-elided="true" class="section-title" />

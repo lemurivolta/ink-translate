@@ -19,10 +19,6 @@ MonoBehaviour:
     XLIFFFile: {fileID: 0}
     ODSFile: {fileID: 102900000, guid: 56e75f144cce2034b94fd0d3c80e190e, type: 3}
     TSVFile: {fileID: 0}
-  - LanguageCode: af
-    XLIFFFile: {fileID: 0}
-    ODSFile: {fileID: 0}
-    TSVFile: {fileID: 0}
   TranslationNotePrefix: 'tnote:'
   SkipStringVariables: 0
   AlwaysTranslatedVariables: []
