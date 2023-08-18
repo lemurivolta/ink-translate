@@ -52,20 +52,18 @@ namespace LemuRivolta.InkTranslate.Editor
 
                 var textNodesFilter = new TextNodesFilter(Asset.SkipStringVariables);
                 var tagNodesFilter = new TagNodesFilter(Asset.TranslationNotePrefix);
-                var filenamesTracker = new FilenamesTracker();
+                var fileLines = new FileLines();
 
                 new InkVisitorParser()
                     .RegisterInkVisitor(textNodesFilter)
                     .RegisterInkVisitor(tagNodesFilter)
-                    .RegisterInkVisitor(filenamesTracker)
+                    .RegisterInkVisitor(fileLines)
                     .WalkTree(mainFilePath);
-
-                var fileLines = new FileLines(mainFilePath);
 
                 var translationTable = new TranslationTable(
                     mainFilePath,
                     Asset.SourceLanguageCode,
-                    fileLines,
+                    fileLines.FileContents,
                     textNodesFilter.TextNodesByLine,
                     tagNodesFilter.Tags);
 
@@ -79,11 +77,11 @@ namespace LemuRivolta.InkTranslate.Editor
                     serializator.Write();
                 }
                 var translationGenerator = new TranslatedInkGenerator(
-                    filenamesTracker.Filenames,
+                    fileLines.Filenames,
                     translationTable.Table,
                     mainFilePath,
                     Asset.OtherSupportedLanguages,
-                    fileLines);
+                    fileLines.FileContents);
                 translationGenerator.GenerateTranslations();
             }
             finally

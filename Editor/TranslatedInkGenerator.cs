@@ -18,20 +18,20 @@ namespace LemuRivolta.InkTranslate.Editor
         private readonly List<TranslationTableEntry> translationTable;
         private readonly string mainFilePath;
         private readonly List<OtherSupportedLanguage> translationLanguages;
-        private readonly FileLines fileLines;
+        private readonly Dictionary<string, string[]> fileContents;
 
         public TranslatedInkGenerator(
             IEnumerable<string> filenames,
             List<TranslationTableEntry> translationTable,
             string mainFilePath,
-        List<OtherSupportedLanguage> translationLanguages,
-        FileLines fileLines)
+            List<OtherSupportedLanguage> translationLanguages,
+            Dictionary<string, string[]> fileContents)
         {
             this.filenames = filenames;
             this.translationTable = translationTable;
             this.mainFilePath = mainFilePath;
             this.translationLanguages = translationLanguages;
-            this.fileLines = fileLines;
+            this.fileContents = fileContents;
         }
 
         private int numFoundTranslations, numMissingTranslations;
@@ -115,7 +115,7 @@ namespace LemuRivolta.InkTranslate.Editor
                     .Replace(mainInkDir, translationDir)
                     .NormalizePath();
                 Assert.AreNotEqual(sourceFilename, destFilename);
-                var lines = (string[])fileLines.GetFileLines(filename).Clone();
+                var lines = (string[])fileContents[filename].Clone();
                 // replace the lines content
                 if (substitutions.ContainsKey(filename))
                 {
