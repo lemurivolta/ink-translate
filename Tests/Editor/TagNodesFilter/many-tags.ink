@@ -1,8 +1,8 @@
 // tags on same line
-First line. #tnote:note1
+First line. #previoustag #tnote:note1 #tnote
 
 // tags on different lines
-#tnote:note2
+#previous #tnote:note2 with spaces #anothertag with spaces
 Second line.
 
 Third line. // no tags

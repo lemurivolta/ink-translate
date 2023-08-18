@@ -55,6 +55,6 @@ public class TagNodesFilterTests
         Assert.That(fileTags[2].Count, Is.EqualTo(1));
         Assert.That(fileTags[2][0], Is.EqualTo("note1"));
         Assert.That(fileTags[5].Count, Is.EqualTo(1));
-        Assert.That(fileTags[5][0], Is.EqualTo("note2"));
+        Assert.That(fileTags[5][0], Is.EqualTo("note2 with spaces"));
     }
 }
