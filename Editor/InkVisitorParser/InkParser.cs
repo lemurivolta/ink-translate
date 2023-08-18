@@ -19,8 +19,11 @@ namespace LemuRivolta.InkTranslate.Editor
 
         private readonly List<InkVisitor> inkVisitors = new();
 
-        public void RegisterInkVisitor(InkVisitor inkVisitor) =>
+        public InkVisitorParser RegisterInkVisitor(InkVisitor inkVisitor)
+        {
             inkVisitors.Add(inkVisitor);
+            return this;
+        }
 
         /// <summary>
         /// Walks the parsed tree of an ink file.
