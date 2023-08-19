@@ -10,8 +10,9 @@ This package is addressed to all sizes of studios, from the ones where a single 
 ```sh
 openupm add it.lemurivolta.ink-translate
 ```
-2. You can also install via git url by adding this entry in your **manifest.json**
+2. You can also install via git url by adding these entries in your **manifest.json**
 ```json
+"com.inkle.ink-unity-integration": "https://github.com/inkle/ink-unity-integration.git#upm",
 "it.lemurivolta.ink-translate": "https://github.com/lemurivolta/ink-translate#upm"
 ```
 
