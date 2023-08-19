@@ -80,7 +80,7 @@ namespace LemuRivolta.InkTranslate.Editor
                 else
                 {
                     substitutions
-                        .GetValueOrCreateDefault(sourceFilename, () => new())
+                        .GetValueOrCreateDefault(entry.Filename, () => new())
                         .GetValueOrCreateDefault(entry.LineNumber, () => new())
                         .Add((
                             entry.StartChar,
@@ -101,16 +101,15 @@ namespace LemuRivolta.InkTranslate.Editor
             }
             // create the files
             j = 0;
-            foreach (var inkFilename in filenames)
+            foreach (var filename in filenames)
             {
-                var filename = inkFilename.ResolveInkFilename(mainFilePath);
+                var sourceFilename = filename.ResolveInkFilename(mainFilePath);
                 if (substitutions.Count > 0)
                 {
                     Phase.Do(basePercentage +
                         percentageMultiplier * (0.5f + j++ / substitutions.Count / 2));
                 }
 
-                var sourceFilename = filename.NormalizePath();
                 var destFilename = sourceFilename
                     .Replace(mainInkDir, translationDir)
                     .NormalizePath();
@@ -140,8 +139,9 @@ namespace LemuRivolta.InkTranslate.Editor
                 {
                     File.Delete(destFilename);
                 }
-                // ink compiler recognizes .ink extension but not .INK extension
-                using var fileStream = File.OpenWrite(Path.ChangeExtension(destFilename, "ink"));
+                // write the file, creating missing directories if necessary
+                Directory.CreateDirectory(Path.GetDirectoryName(destFilename));
+                using var fileStream = File.OpenWrite(destFilename);
                 foreach (var line in lines)
                 {
                     var l = line + "\n";

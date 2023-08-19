@@ -112,7 +112,7 @@ namespace LemuRivolta.InkTranslate.Editor
             return knotName;
         }
 
-        private static string GetHashString(string str)
+        public static string GetHashString(string str)
         {
             char[] stringChars = str.ToCharArray();
             byte[] stringBytes = Encoding.UTF8.GetBytes(stringChars);

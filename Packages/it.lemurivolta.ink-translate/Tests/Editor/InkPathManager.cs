@@ -16,9 +16,9 @@ public class InkPathManager
         this.LocalSubpath = localSubpath;
     }
 
-    public string GetPath(string subpath, bool checkExistence = true)
+    public string GetPath(string subpath, bool checkFileExistence = true)
     {
-        if (checkExistence)
+        if (checkFileExistence)
         {
             var path = AssetDatabase
                 .LoadAssetAtPath<DefaultAsset>(DatabaseAssetRoot + LocalSubpath + subpath)

@@ -38,7 +38,7 @@ public class TSVSerializationFormatHandlerTests
         };
         var content = TSVSerializationFormatHandler.CreateDefaultTSVFile(
             "en-US", l);
-        var tsvPath = pathManager.GetPath("/file.tsv", checkExistence: false);
+        var tsvPath = pathManager.GetPath("/file.tsv", checkFileExistence: false);
         using (var fs = File.Create(tsvPath))
         {
             fs.Write(Encoding.UTF8.GetBytes(content));
