@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
+using UnityEngine.Assertions;
+
 using static LemuRivolta.InkTranslate.InkTranslateAsset;
 
 namespace LemuRivolta.InkTranslate.Editor
@@ -28,6 +30,8 @@ namespace LemuRivolta.InkTranslate.Editor
 
         protected override Dictionary<string, string> InnerRead()
         {
+            var tsvFileAsset = GetLanguageInfo().TSVFile;
+            Assert.IsNotNull(tsvFileAsset);
             // open the TSV stream
             string tsvPath = GetLanguageInfo().TSVFile.GetPath();
             using StreamReader fs = File.OpenText(tsvPath);
