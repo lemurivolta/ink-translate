@@ -145,7 +145,7 @@ public class TSVSerializationFormatHandlerTests
         finally
         {
             // cleanup the TSV asset
-            AssetDatabase.DeleteAsset(tsvPath);
+            AssetDatabase.DeleteAsset(dbTsvPath);
         }
         yield return null;
     }
