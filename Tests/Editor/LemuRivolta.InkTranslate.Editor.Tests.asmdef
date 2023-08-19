@@ -5,6 +5,7 @@
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
         "Ink-Libraries",
+        "InkEditor",
         "LemuRivolta.InkTranslate",
         "LemuRivolta.InkTranslate.Editor"
     ],
