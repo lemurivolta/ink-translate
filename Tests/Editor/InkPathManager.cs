@@ -4,6 +4,8 @@ using NUnit.Framework;
 
 using UnityEditor;
 
+using UnityEngine;
+
 public class InkPathManager
 {
     public const string DatabaseAssetRoot =
@@ -20,21 +22,18 @@ public class InkPathManager
     {
         if (checkFileExistence)
         {
-            var path = AssetDatabase
-                .LoadAssetAtPath<DefaultAsset>(DatabaseAssetRoot + LocalSubpath + subpath)
-                .GetPath()
-                .NormalizePath();
+            var path = GetAsset<Object>(subpath).GetPath().NormalizePath();
             Assert.IsTrue(System.IO.File.Exists(path), $"File {path} (from subpath={subpath}) does not exist");
             return path;
         }
         else
         {
-            var path = AssetDatabase
-                .LoadAssetAtPath<UnityEngine.Object>(DatabaseAssetRoot + LocalSubpath)
-                .GetPath()
-                .NormalizePath();
+            var path = GetAsset<Object>("").GetPath().NormalizePath();
             return path + subpath.Replace('/', System.IO.Path.DirectorySeparatorChar);
         }
     }
 
+    public T GetAsset<T>(string subpath) where T: Object =>
+        AssetDatabase.LoadAssetAtPath<T>(
+            DatabaseAssetRoot + LocalSubpath + subpath);
 }
