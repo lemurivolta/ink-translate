@@ -24,7 +24,7 @@ public class TagNodesFilterTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(tagNodesFilter)
-            .WalkTree(pathManager.GetPath("/no-tags.ink"));
+            .WalkTree(pathManager.GetPath("/no-tags.inkfile"));
 
         var tags = tagNodesFilter.Tags;
         Assert.That(tags.Keys.Count, Is.EqualTo(0));
@@ -40,14 +40,14 @@ public class TagNodesFilterTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(tagNodesFilter)
-            .WalkTree(pathManager.GetPath("/many-tags.ink"));
+            .WalkTree(pathManager.GetPath("/many-tags.inkfile"));
 
         var tags = tagNodesFilter.Tags;
         Assert.That(tags.Keys, Is.EquivalentTo(new[]
         {
-            "many-tags.ink"
+            "many-tags.inkfile"
         }));
-        var fileTags = tags["many-tags.ink"];
+        var fileTags = tags["many-tags.inkfile"];
         Assert.That(fileTags.Keys, Is.EquivalentTo(new[]
         {
             2, 5

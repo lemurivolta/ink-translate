@@ -45,7 +45,7 @@ public class TranslatedInkGeneratorTests
             InkVisitorParser.PhaseFilter.Register();
             TranslationTable.Phase.Register();
             TranslatedInkGenerator.Phase.Register();
-            var mainFilePath = pathManager.GetPath("/main.ink");
+            var mainFilePath = pathManager.GetPath("/main.inkfile");
             var textNodesFilter = new TextNodesFilter(true);
             var fileLines = new FileLines();
             new InkVisitorParser()
@@ -85,16 +85,16 @@ public class TranslatedInkGeneratorTests
 
             // check that the files have been correctly created
             Assert.That(
-                GetNormalizedContents("/translation_it-IT/main.ink"),
+                GetNormalizedContents("/translation_it-IT/main.inkfile"),
                 Is.EqualTo(@"Prima linea.
 
-INCLUDE included/included.ink
-INCLUDE included/subincluded1/subincluded2/subincluded.ink"));
+INCLUDE included/included.inkfile
+INCLUDE included/subincluded1/subincluded2/subincluded.inkfile"));
             Assert.That(
-                GetNormalizedContents("/translation_it-IT/included/included.ink"),
+                GetNormalizedContents("/translation_it-IT/included/included.inkfile"),
                 Is.EqualTo("Seconda linea."));
             Assert.That(
-                GetNormalizedContents("/translation_it-IT/included/subincluded1/subincluded2/subincluded.ink"),
+                GetNormalizedContents("/translation_it-IT/included/subincluded1/subincluded2/subincluded.inkfile"),
                 Is.EqualTo("Terza linea."));
         }
         finally

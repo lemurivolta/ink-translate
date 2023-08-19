@@ -24,20 +24,20 @@ public class FileLinesTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(fileLines)
-            .WalkTree(pathManager.GetPath("/test1-main.ink"));
+            .WalkTree(pathManager.GetPath("/test1-main.inkfile"));
 
         Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
         {
-            "test1-main.ink",
-            "test1-included1.ink",
-            "test1-included2.ink"
+            "test1-main.inkfile",
+            "test1-included1.inkfile",
+            "test1-included2.inkfile"
         }));
 
-        Assert.That(fileLines.FileContents["test1-main.ink"], Is.EqualTo(new string[]
+        Assert.That(fileLines.FileContents["test1-main.inkfile"], Is.EqualTo(new string[]
         {
             "line main before",
             "",
-            "INCLUDE test1-included1.ink",
+            "INCLUDE test1-included1.inkfile",
             "",
             "line main."
         }));
@@ -53,13 +53,13 @@ public class FileLinesTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(fileLines)
-            .WalkTree(pathManager.GetPath("/test2-main.ink"));
+            .WalkTree(pathManager.GetPath("/test2-main.inkfile"));
 
         Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
         {
-            "test2-main.ink",
-            "test2-included1.ink",
-            "test2-included2.ink"
+            "test2-main.inkfile",
+            "test2-included1.inkfile",
+            "test2-included2.inkfile"
         }));
     }
 
@@ -70,15 +70,15 @@ public class FileLinesTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(fileLines)
-            .WalkTree(pathManager.GetPath("/test3-main.ink"));
+            .WalkTree(pathManager.GetPath("/test3-main.inkfile"));
 
         Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
         {
-            "test3-main.ink",
-            "included/subincluded/subsubincluded.ink"
+            "test3-main.inkfile",
+            "included/subincluded/subsubincluded.inkfile"
         }));
 
-        Assert.That(fileLines.FileContents["included/subincluded/subsubincluded.ink"],
+        Assert.That(fileLines.FileContents["included/subincluded/subsubincluded.inkfile"],
             Is.EqualTo(new string[]
             {
                 "subincluded."

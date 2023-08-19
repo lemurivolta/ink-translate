@@ -56,7 +56,7 @@ public class TSVSerializationFormatHandlerTests: TestsBase
 
         try
         {
-            string mainFilePath = pathManager.GetPath("/main.ink");
+            string mainFilePath = pathManager.GetPath("/main.inkfile");
 
             var textNodesFilter = new TextNodesFilter(true);
             var tagNodesFilter = new TagNodesFilter("tnote:");

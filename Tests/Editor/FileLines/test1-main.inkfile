@@ -1,0 +1,5 @@
+line main before
+
+INCLUDE test1-included1.inkfile
+
+line main.

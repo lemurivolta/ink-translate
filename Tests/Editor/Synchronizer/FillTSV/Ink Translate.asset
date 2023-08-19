@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d05577ab9dadd54469b4a9959216ec99, type: 3}
   m_Name: Ink Translate
   m_EditorClassIdentifier: 
-  InkFileAsset: {fileID: 102900000, guid: 56228b6802b2f1146b21e442e89f3ee5, type: 3}
+  InkFileAsset: {fileID: 102900000, guid: 57cb249e871f4cb4e880b574c63a00a1, type: 3}
   SourceLanguageCode: en-US
   OtherSupportedLanguages:
   - LanguageCode: it-IT
