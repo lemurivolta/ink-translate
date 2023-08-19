@@ -1,0 +1,44 @@
+name: Run tests
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  testAllModes:
+    name: Test in ${{ unityVersion }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        projectPath:
+          - Packages/it.lemurivolta.ink-translate
+        unityVersion:
+          - '2022.3.1f1'
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - uses: game-ci/unity-test-runner@v2
+        id: tests
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+        with:
+          projectPath: ${{ matrix.projectPath }}
+          unityVersion: ${{ matrix.unityVersion }}
+          testMode: editmode
+          artifactsPath: editmode-artifacts
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          checkName: Test Results
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;generateBadgeReport;assemblyFilters:+my.assembly.*'
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Test results for editmode
+          path: ${{ steps.tests.outputs.artifactsPath }}
+      - uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: Coverage results for editmode
+          path: ${{ steps.tests.outputs.coveragePath }}
