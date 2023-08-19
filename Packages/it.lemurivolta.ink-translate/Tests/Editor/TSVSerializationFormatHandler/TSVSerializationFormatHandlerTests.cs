@@ -13,9 +13,10 @@ using UnityEditor;
 
 using UnityEngine.TestTools;
 
-public class TSVSerializationFormatHandlerTests
+public class TSVSerializationFormatHandlerTests: TestsBase
 {
-    private readonly InkPathManager pathManager = new("/TSVSerializationFormatHandler");
+    public TSVSerializationFormatHandlerTests()
+        : base("/TSVSerializationFormatHandler") { }
 
     [SetUp]
     public void SetUp()
