@@ -24,13 +24,13 @@ public class TextNodesFilterTests
 
         new InkVisitorParser()
             .RegisterInkVisitor(textNodesFilter)
-            .WalkTree(pathManager.GetPath("/one-line.ink"));
+            .WalkTree(pathManager.GetPath("/one-line.inkfile"));
 
         var textNodes = textNodesFilter.TextNodesByLine;
-        Assert.Contains("one-line.ink", textNodes.Keys);
-        Assert.Contains(1, textNodes["one-line.ink"].Keys);
-        Assert.AreEqual(1, textNodes["one-line.ink"][1].Count);
-        Assert.AreEqual("Just one line.", textNodes["one-line.ink"][1][0].text);
+        Assert.Contains("one-line.inkfile", textNodes.Keys);
+        Assert.Contains(1, textNodes["one-line.inkfile"].Keys);
+        Assert.AreEqual(1, textNodes["one-line.inkfile"][1].Count);
+        Assert.AreEqual("Just one line.", textNodes["one-line.inkfile"][1][0].text);
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public class TextNodesFilterTests
     {
         TextNodesFilter textNodesFilter = new(false);
 
-        var subpath = "multiple-lines.ink";
+        var subpath = "multiple-lines.inkfile";
 
         new InkVisitorParser()
             .RegisterInkVisitor(textNodesFilter)
@@ -78,7 +78,7 @@ public class TextNodesFilterTests
     {
         TextNodesFilter textNodesFilter = new(skipStringVariables);
 
-        var subpath = "string-variables.ink";
+        var subpath = "string-variables.inkfile";
 
         new InkVisitorParser()
             .RegisterInkVisitor(textNodesFilter)
@@ -109,7 +109,7 @@ public class TextNodesFilterTests
     {
         TextNodesFilter textNodesFilter = new(false);
 
-        var subpath = "multiple-files-main.ink";
+        var subpath = "multiple-files-main.inkfile";
 
         new InkVisitorParser()
             .RegisterInkVisitor(textNodesFilter)
@@ -118,11 +118,11 @@ public class TextNodesFilterTests
         var textNodesByLine = textNodesFilter.TextNodesByLine;
         Assert.That(textNodesByLine.Keys.Count, Is.EqualTo(2));
         Assert.That(textNodesByLine.Keys, Is.EquivalentTo(new string[] {
-            "multiple-files-main.ink",
-            "multiple-files-included.ink"
+            "multiple-files-main.inkfile",
+            "multiple-files-included.inkfile"
         }));
-        var mainLines = textNodesByLine["multiple-files-main.ink"];
-        var includedLines = textNodesByLine["multiple-files-included.ink"];
+        var mainLines = textNodesByLine["multiple-files-main.inkfile"];
+        var includedLines = textNodesByLine["multiple-files-included.inkfile"];
 
         Assert.That(mainLines.Keys, Is.EquivalentTo(new int[] { 1, 5 }));
         var line1 = mainLines[1];

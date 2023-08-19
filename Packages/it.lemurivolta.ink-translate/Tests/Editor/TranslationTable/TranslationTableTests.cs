@@ -67,7 +67,7 @@ public class TranslationTableTests
     [Test]
     public void BasicTranslationTable()
     {
-        var tt = CreateTestData("/main.ink");
+        var tt = CreateTestData("/main.inkfile");
 
         var table = tt.Table;
 
@@ -77,7 +77,7 @@ public class TranslationTableTests
             new()
             {
                 Key = "",
-                Filename = "main.ink",
+                Filename = "main.inkfile",
                 LineNumber = 2,
                 StartChar = 1,
                 EndChar = 11,
@@ -90,7 +90,7 @@ public class TranslationTableTests
             new()
             {
                 Key = "",
-                Filename = "main.ink",
+                Filename = "main.inkfile",
                 LineNumber = 4,
                 StartChar = 1,
                 EndChar = 12,
@@ -103,7 +103,7 @@ public class TranslationTableTests
             new()
             {
                 Key = "",
-                Filename = "main.ink",
+                Filename = "main.inkfile",
                 LineNumber = 6,
                 StartChar = 1,
                 EndChar = 11,
@@ -116,7 +116,7 @@ public class TranslationTableTests
             new()
             {
                 Key = "",
-                Filename = "main.ink",
+                Filename = "main.inkfile",
                 LineNumber = 7,
                 StartChar = 1,
                 EndChar = 12,
@@ -129,7 +129,7 @@ public class TranslationTableTests
             new()
             {
                 Key = "",
-                Filename = "main.ink",
+                Filename = "main.inkfile",
                 LineNumber = 10,
                 StartChar = 1,
                 EndChar = 11,

@@ -27,18 +27,6 @@ public class TestsBase
         this.pathsToBackup = pathsToBackup;
     }
 
-    [SetUp]
-    public void DisableInkPostProcessor()
-    {
-        Ink.UnityIntegration.InkPostProcessor.disabled = true;
-    }
-
-    [TearDown]
-    public void EnableInkPostProcessor()
-    {
-        Ink.UnityIntegration.InkPostProcessor.disabled = false;
-    }
-
     private HashSet<string> startingFiles;
     private HashSet<string> startingDirectories;
 

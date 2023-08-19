@@ -1,0 +1,4 @@
+First line.
+
+INCLUDE included/included.inkfile
+INCLUDE included/subincluded1/subincluded2/subincluded.inkfile

@@ -17,7 +17,7 @@ public class SynchronizerTests : TestsBase
     {
         fillTsvPath,
         fillFromTsvPath,
-        "/FillFromTSV/translation_it-IT/main.ink"
+        "/FillFromTSV/translation_it-IT/main.inkfile"
     })
     { }
 
@@ -44,7 +44,7 @@ public class SynchronizerTests : TestsBase
 
         var translatedInkContents = File.ReadAllText(
             pathManager.GetPath(
-                "/FillTSV/translation_it-IT/main.ink", checkFileExistence: false));
+                "/FillTSV/translation_it-IT/main.inkfile", checkFileExistence: false));
         Assert.That(
             translatedInkContents.Trim().Replace("\r\n", "\n"),
             Is.EqualTo("First line.\nSecond line."));
@@ -73,7 +73,7 @@ public class SynchronizerTests : TestsBase
 
         var translatedInkContents = File.ReadAllText(
             pathManager.GetPath(
-                "/FillFromTSV/translation_it-IT/main.ink", checkFileExistence: false));
+                "/FillFromTSV/translation_it-IT/main.inkfile", checkFileExistence: false));
         Assert.That(
             translatedInkContents.Trim().Replace("\r\n", "\n"),
             Is.EqualTo("Prima linea.\nSeconda linea."));
