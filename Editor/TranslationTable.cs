@@ -88,10 +88,7 @@ namespace LemuRivolta.InkTranslate.Editor
                         StartChar = startChar,
                         EndChar = endChar,
                         Notes = tags != null ? string.Join("\n", tags) : null,
-                        Languages = new() { {
-                            sourceLanguageCode,
-                            content[(startChar - 1)..(endChar - 1)]
-                        } }
+                        Languages = new() { { sourceLanguageCode, content } }
                     });
                 }
             }

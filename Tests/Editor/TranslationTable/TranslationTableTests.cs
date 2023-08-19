@@ -92,8 +92,8 @@ public class TranslationTableTests
                 Key = "",
                 Filename = "main.inkfile",
                 LineNumber = 4,
-                StartChar = 1,
-                EndChar = 12,
+                StartChar = 3,
+                EndChar = 14,
                 Languages = new()
                 {
                     { "en-US", "Second row." }
