@@ -18,6 +18,7 @@ namespace LemuRivolta.InkTranslate.Editor
 
         public override void VisitFile(string filename, string contents)
         {
+            filename = filename.Replace("\\", "/");
             fileContents[filename] = contents.Split('\n');
         }
     }

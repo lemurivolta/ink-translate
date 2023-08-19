@@ -62,4 +62,27 @@ public class FileLinesTests
             "test2-included2.ink"
         }));
     }
+
+    [Test]
+    public void TestFilesWithSubdirectories()
+    {
+        FileLines fileLines = new();
+
+        new InkVisitorParser()
+            .RegisterInkVisitor(fileLines)
+            .WalkTree(pathManager.GetPath("/test3-main.ink"));
+
+        Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
+        {
+            "test3-main.ink",
+            "included/subincluded/subsubincluded.ink"
+        }));
+
+        Assert.That(fileLines.FileContents["included/subincluded/subsubincluded.ink"],
+            Is.EqualTo(new string[]
+            {
+                "subincluded."
+            }));
+
+    }
 }
