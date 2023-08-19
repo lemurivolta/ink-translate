@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff srcLang="en-US" trgLang="de-DE" version="2.0" xmlns="urn:oasis:names:tc:xliff:document:2.0">
+  <file id="-">
+    <unit id="-">
+      <segment>
+        <source>-</source>
+        <target>-</target>
+      </segment>
+    </unit>
+  </file>
+  <file id="IncludedFile.ink" original="IncludedFile.ink">
+    <unit id="IncludedFile--8bb5ed97">
+      <segment>
+        <source>line</source>
+      </segment>
+    </unit>
+    <unit id="IncludedFile--7c58ba7e">
+      <segment>
+        <source>This is an included {name}.</source>
+      </segment>
+    </unit>
+  </file>
+  <file id="main.ink" original="main.ink">
+    <unit id="main--54cf177f">
+      <segment>
+        <source>This is the main ink file.</source>
+      </segment>
+    </unit>
+    <unit id="main--dff63039">
+      <notes>
+        <note>here we have a note</note>
+      </notes>
+      <segment>
+        <source>This is a row.</source>
+      </segment>
+    </unit>
+    <unit id="main--4e551b4c">
+      <segment>
+        <source>And this is another one.</source>
+      </segment>
+    </unit>
+  </file>
+</xliff>

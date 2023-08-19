@@ -1,4 +1,3 @@
-VAR DoTranslate = "Da tradurre"
-VAR DoNotTranslate = "Da non tradurre"
+VAR name="line"
 
-Questa è una riga da included.
+This is an included {name}.

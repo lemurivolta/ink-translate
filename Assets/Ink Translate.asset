@@ -13,13 +13,11 @@ MonoBehaviour:
   m_Name: Ink Translate
   m_EditorClassIdentifier: 
   InkFileAsset: {fileID: 102900000, guid: 35945f8fe70e3924eb0e79186e5d956b, type: 3}
-  SourceLanguageCode: it-IT
+  SourceLanguageCode: en-US
   OtherSupportedLanguages:
-  - LanguageCode: en-US
+  - LanguageCode: it-IT
     XLIFFFile: {fileID: 0}
-    ODSFile: {fileID: 102900000, guid: 56e75f144cce2034b94fd0d3c80e190e, type: 3}
-    TSVFile: {fileID: 0}
+    ODSFile: {fileID: 102900000, guid: 4d615887bcd6f9c4c8205c56787e0d37, type: 3}
+    TSVFile: {fileID: 102900000, guid: 91eaa447077939645a9b97000bca8c7a, type: 3}
   TranslationNotePrefix: 'tnote:'
   SkipStringVariables: 0
-  AlwaysTranslatedVariables: []
-  NeverTranslatedVariables: []
