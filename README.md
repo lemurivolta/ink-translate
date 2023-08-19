@@ -4,4 +4,4 @@ This Unity package allows you to handle the translations of a game based on the 
 
 The tool is thought to work in an incremental fashion: no translation is ever lost during the process.
 
-This is the host project, used to develop the package. The package itself is inside [Packages/it.lemurivolta.ink-translate](Packages/it.lemurivolta.ink-translate#readme)
+This is the host project, used to develop the package. The package itself is inside [Packages/it.lemurivolta.ink-translate](Packages/it.lemurivolta.ink-translate#readme).
