@@ -96,7 +96,8 @@ INCLUDE included/subincluded1/subincluded2/subincluded.ink"));
             Assert.That(
                 GetNormalizedContents("/translation_it-IT/included/subincluded1/subincluded2/subincluded.ink"),
                 Is.EqualTo("Terza linea."));
-        } finally
+        }
+        finally
         {
             // cleanup generated files and directories
             var currentFiles = Directory.EnumerateFiles(
@@ -105,8 +106,16 @@ INCLUDE included/subincluded1/subincluded2/subincluded.ink"));
                 rootPath, "*", SearchOption.AllDirectories).ToHashSet();
             currentFiles.ExceptWith(startingFiles);
             currentDirectories.ExceptWith(startingDirectories);
-            UnityEngine.Debug.Log("ok");
+            foreach (var file in currentFiles)
+            {
+                File.Delete(file);
+            }
+            foreach (var directory in currentDirectories.OrderByDescending(d => d.Length))
+            {
+                Directory.Delete(directory);
+            }
         }
+        yield return null;
     }
 
     private string GetNormalizedContents(string filePath) =>
