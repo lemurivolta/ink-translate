@@ -166,5 +166,13 @@ namespace LemuRivolta.InkTranslate.Editor
             }
             return dictionary[key];
         }
+
+        /// <summary>
+        /// Normalize the newslines in the file to just "\n".
+        /// </summary>
+        /// <param name="s">The string to normalize.</param>
+        /// <returns>The string with normalized newlines.</returns>
+        public static string NormalizeNewlines(this string s) =>
+            s.Replace("\r\n", "\n");
     }
 }
