@@ -5,8 +5,6 @@ using LemuRivolta.InkTranslate.Editor;
 
 using NUnit.Framework;
 
-using UnityEditor.VersionControl;
-
 public class TranslationTableTests
 {
     private readonly InkPathManager pathManager = new("/TranslationTable");

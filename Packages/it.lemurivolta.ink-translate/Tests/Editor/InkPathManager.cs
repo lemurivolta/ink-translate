@@ -6,24 +6,35 @@ using UnityEditor;
 
 public class InkPathManager
 {
-    private const string databaseAssetRoot =
+    public const string DatabaseAssetRoot =
         "Packages/it.lemurivolta.ink-translate/Tests/Editor";
 
-    private readonly string localSubpath;
+    public readonly string LocalSubpath;
 
     public InkPathManager(string localSubpath)
     {
-        this.localSubpath = localSubpath;
+        this.LocalSubpath = localSubpath;
     }
 
-    public string GetPath(string subpath)
+    public string GetPath(string subpath, bool checkExistence = true)
     {
-        var path = AssetDatabase
-            .LoadAssetAtPath<DefaultAsset>(databaseAssetRoot + localSubpath + subpath)
-            .GetPath()
-            .NormalizePath();
-        Assert.IsTrue(System.IO.File.Exists(path), $"File {path} (from subpath={subpath}) does not exist");
-        return path;
+        if (checkExistence)
+        {
+            var path = AssetDatabase
+                .LoadAssetAtPath<DefaultAsset>(DatabaseAssetRoot + LocalSubpath + subpath)
+                .GetPath()
+                .NormalizePath();
+            Assert.IsTrue(System.IO.File.Exists(path), $"File {path} (from subpath={subpath}) does not exist");
+            return path;
+        }
+        else
+        {
+            var path = AssetDatabase
+                .LoadAssetAtPath<UnityEngine.Object>(DatabaseAssetRoot + LocalSubpath)
+                .GetPath()
+                .NormalizePath();
+            return path + subpath.Replace('/', System.IO.Path.DirectorySeparatorChar);
+        }
     }
 
 }
