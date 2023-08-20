@@ -89,7 +89,7 @@ public class TranslatedInkGeneratorTests
                 Is.EqualTo(@"Prima linea.
 
 INCLUDE included/included.inkfile
-INCLUDE included/subincluded1/subincluded2/subincluded.inkfile"));
+INCLUDE included/subincluded1/subincluded2/subincluded.inkfile".NormalizeNewlines()));
             Assert.That(
                 GetNormalizedContents("/translation_it-IT/included/included.inkfile"),
                 Is.EqualTo("Seconda linea."));
@@ -120,7 +120,6 @@ INCLUDE included/subincluded1/subincluded2/subincluded.inkfile"));
 
     private string GetNormalizedContents(string filePath) =>
         File.ReadAllText(pathManager.GetPath(filePath))
-            .Replace("\r\n", "\n")
-            .Replace("\n", "\r\n")
+            .NormalizeNewlines()
             .Trim();
 }
