@@ -16,8 +16,12 @@ MonoBehaviour:
   SourceLanguageCode: en-US
   OtherSupportedLanguages:
   - LanguageCode: it-IT
-    XLIFFFile: {fileID: 0}
+    XLIFFFile: {fileID: 102900000, guid: 06ee63f123da8554581c72b8a88ea45f, type: 3}
     ODSFile: {fileID: 102900000, guid: 4d615887bcd6f9c4c8205c56787e0d37, type: 3}
     TSVFile: {fileID: 102900000, guid: 91eaa447077939645a9b97000bca8c7a, type: 3}
+  - LanguageCode: de-DE
+    XLIFFFile: {fileID: 102900000, guid: c91a93e69b4afd34587f15f38a513ca0, type: 3}
+    ODSFile: {fileID: 0}
+    TSVFile: {fileID: 0}
   TranslationNotePrefix: 'tnote:'
   SkipStringVariables: 0
