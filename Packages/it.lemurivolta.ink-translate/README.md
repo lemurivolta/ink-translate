@@ -4,6 +4,8 @@
 
 This package is addressed to all sizes of studios, from the ones where a single person covers all the roles, to those with multiple writers, translators and programmers.
 
+**NOTE WELL**: this is still a ["major version zero"](https://semver.org/#spec-item-4) release. As such, it's not yet production ready, and it could radically change before reaching version 1. That said, it's been internally tested on small and medium projects, and it's unit tested: you are encouraged to use it, and report any problem to make this project grow toward stability!
+
 ## Installation
 
 1. The package is available on the [openupm registry](https://openupm.com). You can install it via [openupm-cli](https://github.com/openupm/openupm-cli).
