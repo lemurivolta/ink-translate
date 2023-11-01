@@ -13,6 +13,8 @@ namespace LemuRivolta.InkTranslate
         menuName = "Ink Translate/Create Ink Translate Asset")]
     public class InkTranslateAsset : ScriptableObject
     {
+#if UNITY_EDITOR
+
         [Serializable]
         public enum FileFormat
         {
@@ -44,8 +46,6 @@ namespace LemuRivolta.InkTranslate
 
         [Tooltip("Whether to skip the content of string variables (they don't contain any content to display directly to the user) or not.")]
         public bool SkipStringVariables;
-
-#if UNITY_EDITOR
 
         private void OnValidate()
         {
