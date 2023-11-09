@@ -1,5 +1,5 @@
 [![openupm](https://img.shields.io/npm/v/it.lemurivolta.ink-translate?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/it.lemurivolta.ink-translate/)
-![tests](https://github.com/lemurivolta/ink-translate/actions/workflows/main.yml/badge.svg)
+[![tests](https://github.com/lemurivolta/ink-translate/actions/workflows/main.yml/badge.svg)](https://github.com/lemurivolta/ink-translate/actions/workflows/main.yml)
 
 # :pencil2: Ink Translate
 
