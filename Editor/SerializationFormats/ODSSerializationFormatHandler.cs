@@ -215,6 +215,22 @@ namespace LemuRivolta.InkTranslate.Editor
                 CleanupCell(targetTranslationCell);
             }
 
+            // remove empty table rows
+            // this is especially important when ODS editors like libreoffice add
+            // empty padding covering all lines in a document, with something like:
+            /*
+             * <table:table-row table:style-name="ro1" table:number-rows-repeated="1048568">
+             *      <table:table-cell table:number-columns-repeated="3" />
+             * </table:table-row>
+             */
+            // when we add new translation lines to such a document, we get over the
+            // maximum number of rows and make the document unreadable
+            (from row in xDocument.Descendants(nsTable + "table-row")
+            where row.Descendants(nsText + "p").FirstOrDefault() == null
+            select row)
+            .Remove();
+
+            // print statistics
             var numTableRows = xDocument.Descendants(nsTable + "table-row").Count();
             UnityEngine.Debug.Log(numTableRows.ToString());
 
