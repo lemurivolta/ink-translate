@@ -1,0 +1,55 @@
+{Choice 1 with content|Choice 2 with content} after.
+
+Choice {1 with content before.|2 with content before.}
+
+Choice {1 with content|2 with content} before and after.
+
+{Choice 1 with nothing|Choice 2 with nothing}
+
+
+{&Choice 1 with content|Choice 2 with content} after.
+
+Choice {&1 with content before.|2 with content before.}
+
+Choice {&1 with content|2 with content} before and after.
+
+{&Choice 1 with nothing|Choice 2 with nothing}
+
+
+{!Choice 1 with content|Choice 2 with content} after.
+
+Choice {!1 with content \{ before.|2 with content before.}
+
+Choice {!1 with content|2 with content} before and after.
+
+{!Choice 1 with nothing|Choice 2 with nothing}
+
+
+{~Choice 1 with content|Choice 2 with content} after.
+
+Choice {~1 with content before.|2 with content before.}
+
+Choice {~1 with content|2 with content} before and after.
+
+{~Choice 1 with nothing|Choice 2 with nothing}
+
+
+{|||Final choice}.
+{Starting choice|||}.
+
+{&|||Final choice}.
+{&Starting choice|||}.
+
+{!|||Final choice}.
+{!Starting choice|||}.
+
+{~|||Final choice}.
+{~Starting choice|||}.
+
+
+{&{!Nested|Nesteeeeed} Choice}
+{~Nested{!Choice|Choiceeeee}}
+
+
+
+I {waited.|waited some more.|snoozed.|woke up and waited more.|gave up and left. -> leave_post_office}

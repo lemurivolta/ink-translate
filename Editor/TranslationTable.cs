@@ -56,6 +56,57 @@ namespace LemuRivolta.InkTranslate.Editor
                         endChar--;
                     }
 
+                    // special case for alternatives.
+                    // if we include an opening brace for an alternative ("{choice 1|..."),
+                    // then we must also include the corresponding closing brace, otherwise
+                    // the translation will be correct but very error-prone.
+                    // vice-versa, if we include the closing brace ("...|choice n}"), then
+                    // we must also include the opening brace.
+                    // TODO: is there an option to escape braces? in that case we must skip
+                    // them
+                    var interestingPart = line[(startChar - 1)..(endChar - 1)];
+                    var numOpened = interestingPart.Count(ch => ch == '{');
+                    var numClosed = interestingPart.Count(ch => ch == '}');
+                    bool found;
+                    while (numOpened > numClosed)
+                    {
+                        // look for the next closed brace
+                        found = false;
+                        for (var newEndChar = endChar; newEndChar - 1 < line.Length; newEndChar++)
+                        {
+                            if (IsBrace(line, newEndChar, '}'))
+                            {
+                                found = true;
+                                endChar = newEndChar + 1;
+                                numClosed++;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            break;
+                        }
+                    }
+                    while (numOpened < numClosed)
+                    {
+                        // look for the previous open brace
+                        found = false;
+                        for (var newStartChar = startChar - 1; newStartChar >= 1; newStartChar--)
+                        {
+                            if (IsBrace(line, newStartChar, '{'))
+                            {
+                                found = true;
+                                startChar = newStartChar;
+                                numOpened++;
+                                break;
+                            }
+                        }
+                        if (!found)
+                        {
+                            break;
+                        }
+                    }
+
                     // get the translation key
                     var knotName = GetContainingKnotName(firstTextNode);
                     var content = line[(startChar - 1)..(endChar - 1)];
@@ -93,6 +144,17 @@ namespace LemuRivolta.InkTranslate.Editor
                 }
             }
         }
+
+        private bool IsBrace(string line, int index, char brace) =>
+            // it's a brace if it's, well, a brace, and...
+            line[index - 1] == brace && (
+                // this is the first character (can't be escaped!), or...
+                index - 1 == 0 ||
+                // it's not preceded by a \ (so it's not escaped), or...
+                line[index - 2] != '\\' ||
+                // it's preceded by a \, but the character before it is also a \
+                (index - 2 > 0 && line[index - 3] == '\\'));
+        // TODO: this isn't actually a good parser, but it should cover 99% of the cases
 
         private string GetContainingKnotName(Ink.Parsed.Object o)
         {
