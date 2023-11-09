@@ -39,5 +39,40 @@
         <source>And this is another one.</source>
       </segment>
     </unit>
+    <unit id="main--fb0e5f4f">
+      <segment>
+        <source>A first choice|A second choice|A third choice}.</source>
+      </segment>
+    </unit>
+    <unit id="main--7c08480d">
+      <segment>
+        <source>A first choice.|A second choice.|A third choice.</source>
+      </segment>
+    </unit>
+    <unit id="main--8b4b4019">
+      <segment>
+        <source>Choice 1 with content|Choice 2 with content} after.</source>
+      </segment>
+    </unit>
+    <unit id="main--e2aad4d4">
+      <segment>
+        <source>Choice {1 with content before.|2 with content before.</source>
+      </segment>
+    </unit>
+    <unit id="main--ed75815c">
+      <segment>
+        <source>Choice {1 with content|2 with content} before and after.</source>
+      </segment>
+    </unit>
+    <unit id="main--c3ef5408">
+      <segment>
+        <source>{Choice 1 with content|Choice 2 with content} after.</source>
+      </segment>
+    </unit>
+    <unit id="main--d5370e97">
+      <segment>
+        <source>Choice {1 with content before.|2 with content before.}</source>
+      </segment>
+    </unit>
   </file>
 </xliff>
