@@ -10,13 +10,21 @@ namespace LemuRivolta.InkTranslate.Editor
         {
             // open the zip archive
             using var zipArchive = new ZipArchive(stream);
-            // get the main xml
-            var contentXmlEntry = zipArchive.GetEntry("content.xml");
-            // parse the main xml
+            var contentXDocument = getXDocument(zipArchive, "content.xml");
+            var stylesXDocument = getXDocument(zipArchive, "styles.xml");
+            // wrap it in our main class
+            return new ODSDocument(contentXDocument, stylesXDocument);
+        }
+
+        private XDocument getXDocument(ZipArchive zipArchive, string name)
+        {
+            // get the xml
+            var contentXmlEntry = zipArchive.GetEntry(name);
+            // parse the xml
             using var contentXmlStream = contentXmlEntry.Open();
             var xDocument = XDocument.Load(contentXmlStream);
-            // wrap it in our main class
-            return new ODSDocument(xDocument);
+            // return the document
+            return xDocument;
         }
     }
 }
