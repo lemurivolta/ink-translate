@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -53,6 +54,15 @@ namespace LemuRivolta.InkTranslate.Editor
             // read the ODS document
             var odsReader = new ODSReader();
             odsDocument = odsReader.Deserialize(stream);
+            CleanupEmptyRows();
+            // add possibly missing styles
+            AddMissingStyles();
+            // return the translations contained inside
+            return TranslationRows.ToDictionary(GetTranslationRowKey, GetTranslationRowTarget);
+        }
+
+        private void CleanupEmptyRows()
+        {
             // remove all rows in the Translations table without content
             // this is especially important when ODS editors like libreoffice add
             // empty padding covering all lines in a document, with something like:
@@ -74,8 +84,44 @@ namespace LemuRivolta.InkTranslate.Editor
             {
                 row.Remove();
             }
-            // return the translations contained inside
-            return TranslationRows.ToDictionary(GetTranslationRowKey, GetTranslationRowTarget);
+        }
+
+        private const string removedTranslationStyleName = "Removed Translation";
+
+        private void AddMissingStyles()
+        {
+            // get or create "removed translation" style
+            ODSStyle removedStyle;
+            if ((removedStyle = odsDocument.Styles.FirstOrDefault(style => style.Name == removedTranslationStyleName)) == null)
+            {
+                odsDocument.AppendStyle(removedStyle = new()
+                {
+                    Name = removedTranslationStyleName
+                });
+            }
+            removedStyle.Family = ODSStyleFamily.TableCell;
+            removedStyle.ParentStyleName = "Default";
+            // get or create its text properties
+            ODSStyleTextProperties styleTextProperties;
+            if ((styleTextProperties = removedStyle.Content.OfType<ODSStyleTextProperties>().FirstOrDefault()) == null)
+            {
+                removedStyle.AppendContent(styleTextProperties = new ODSStyleTextProperties());
+            }
+            // set or reset the properties of the style
+            styleTextProperties.FontSize = new ODSLengthFontSize(8, ODSSizeUnit.Pt);
+            styleTextProperties.FontColor = UnityEngine.Color.gray;
+
+            // update default style
+            var defaultStyle = odsDocument.Styles.First(style => style.Name == "Default");
+            // get or set its table cell properties
+            ODSStyleTableCellProperties tableCellProperties;
+            if ((tableCellProperties = defaultStyle.Content.OfType<ODSStyleTableCellProperties>().FirstOrDefault()) == null)
+            {
+                defaultStyle.AppendContent(tableCellProperties = new ODSStyleTableCellProperties());
+            }
+            // set or reset the properties of the style
+            tableCellProperties.WrapOption = ODSWrapOption.Wrap;
+            tableCellProperties.VerticalAlign = ODSTableCellVerticalAlign.Middle;
         }
 
         protected override void InnerSerialize()
@@ -116,6 +162,10 @@ namespace LemuRivolta.InkTranslate.Editor
                 if (!existingKeys.Contains(key))
                 {
                     UnityEngine.Debug.Log($"key {key} is obsolete");
+                    foreach (var cell in translationRow.TableCells)
+                    {
+                        cell.StyleName = removedTranslationStyleName;
+                    }
                 }
             }
             // write the file

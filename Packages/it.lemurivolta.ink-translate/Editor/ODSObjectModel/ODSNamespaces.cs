@@ -21,6 +21,7 @@ namespace LemuRivolta.InkTranslate.Editor
             "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
         public static readonly XName OfficeValueType = Office + "value-type";
         public static readonly XName OfficeAnnotation = Office + "annotation";
+        public static readonly XName OfficeStyles = Office + "styles";
 
         public static readonly XNamespace Calcext =
             "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0";
@@ -33,10 +34,13 @@ namespace LemuRivolta.InkTranslate.Editor
         public static readonly XName StyleFamily = Style + "family";
         public static readonly XName StyleParentStyleName = Style + "parent-style-name";
         public static readonly XName StyleTextProperties = Style + "text-properties";
+        public static readonly XName StyleTableCellProperties = Style + "table-cell-properties";
+        public static readonly XName StyleVerticalAlign = Style + "vertical-align";
 
         public static readonly XNamespace Fo =
             "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0";
         public static readonly XName FoFontSize = Fo + "font-size";
         public static readonly XName FoColor = Fo + "color";
+        public static readonly XName FoWrapOption = Fo + "wrap-option";
     }
 }

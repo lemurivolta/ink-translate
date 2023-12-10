@@ -19,8 +19,17 @@ namespace LemuRivolta.InkTranslate.Editor
             .Descendants(ODSNamespaces.TableTable)
             .Select(tableElement => new ODSTable(tableElement));
 
-        public IEnumerable<ODSStyle> Styles => StylesXDocument
+        public IEnumerable<ODSStyle> Styles => OfficeStyles
             .Descendants(ODSNamespaces.StyleStyle)
             .Select(styleElement => new ODSStyle(styleElement));
+
+        public void AppendStyle(ODSStyle style)
+        {
+            OfficeStyles.Add(style.Element);
+        }
+
+        private XElement OfficeStyles => StylesXDocument
+            .Descendants(ODSNamespaces.OfficeStyles)
+            .First();
     }
 }

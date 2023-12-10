@@ -8,7 +8,8 @@ namespace LemuRivolta.InkTranslate.Editor
     public enum ODSStyleFamily
     {
         // and many more
-        TableCell
+        TableCell,
+        TableRow
     }
 
     public class ODSStyle
@@ -21,16 +22,18 @@ namespace LemuRivolta.InkTranslate.Editor
             set => Element.SetAttributeValue(ODSNamespaces.StyleName, value);
         }
 
-        public ODSStyleFamily Type
+        public ODSStyleFamily Family
         {
             get => Element.Attribute(ODSNamespaces.StyleFamily).Value switch
             {
                 "table-cell" => ODSStyleFamily.TableCell,
+                "table-row" => ODSStyleFamily.TableRow,
                 _ => throw new System.NotImplementedException($"style {Element.Attribute(ODSNamespaces.StyleFamily).Value} not implemented")
             };
             set => Element.SetAttributeValue(ODSNamespaces.StyleFamily, value switch
             {
                 ODSStyleFamily.TableCell => "table-cell",
+                ODSStyleFamily.TableRow => "table-row",
                 _ => throw new System.NotImplementedException($"style {value} not implemented")
             });
         }
@@ -47,6 +50,10 @@ namespace LemuRivolta.InkTranslate.Editor
                 if (e.Name == ODSNamespaces.StyleTextProperties)
                 {
                     return new ODSStyleTextProperties(e);
+                }
+                else if (e.Name == ODSNamespaces.StyleTableCellProperties)
+                {
+                    return new ODSStyleTableCellProperties(e);
                 }
                 else
                 {
