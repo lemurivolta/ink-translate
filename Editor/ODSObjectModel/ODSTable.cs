@@ -21,13 +21,20 @@ namespace LemuRivolta.InkTranslate.Editor
             set => tableElement.SetAttributeValue(ODSNamespaces.TableName, value);
         }
 
-        public IEnumerable<ODSTableRow> TableRows {
+        public IEnumerable<ODSTableRow> TableRows
+        {
             get => tableElement.Descendants(ODSNamespaces.TableTableRow).Select(row => new ODSTableRow(row));
         }
 
         public void AddTableRow(ODSTableRow row)
         {
             tableElement.Add(row.Element);
+        }
+
+        public void AddTableRowAfter(ODSTableRow row, ODSTableRow after)
+        {
+            Debug.Assert(after.Element.Parent == tableElement);
+            after.Element.AddAfterSelf(row.Element);
         }
     }
 }

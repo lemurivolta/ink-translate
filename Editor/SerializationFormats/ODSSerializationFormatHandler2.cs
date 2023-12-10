@@ -82,20 +82,31 @@ namespace LemuRivolta.InkTranslate.Editor
         {
             // update the XML document
             var translationRowsByKey = TranslationRows.ToDictionary(GetTranslationRowKey);
+            ODSTableRow previousRow = null;
             foreach (var entry in translationTable)
             {
                 // get or create the corresponding translation row
                 if (!translationRowsByKey.TryGetValue(entry.Key, out var translationRow))
                 {
-                    MainTable.AddTableRow(translationRow = new()
+                    translationRow = new()
                     {
                         StyleName = "ro2"
-                    });
+                    };
+                    if (previousRow == null)
+                    {
+                        MainTable.AddTableRow(translationRow);
+                    }
+                    else
+                    {
+                        MainTable.AddTableRowAfter(translationRow, previousRow);
+                    }
                 }
                 // get or set the cells inside
                 SetTranslationCell(translationRow, 0, entry.Key, annotation: entry.Notes);
                 SetTranslationCell(translationRow, 1, entry.Languages[sourceLanguageCode], styleName: "ce3");
                 SetTranslationCell(translationRow, 2, entry.Languages.GetValueOrDefault(languageCode, null) ?? "");
+                // remember this row
+                previousRow = translationRow;
             }
             // write the file
             using (var stream = File.Open(GetLanguageInfo().ODSFile.GetPath(), FileMode.OpenOrCreate, FileAccess.ReadWrite))
