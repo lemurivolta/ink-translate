@@ -80,7 +80,7 @@ namespace LemuRivolta.InkTranslate.Editor
 
         protected override void InnerSerialize()
         {
-            // update the XML document
+            // update the XML document with the translations from the translation table
             var translationRowsByKey = TranslationRows.ToDictionary(GetTranslationRowKey);
             ODSTableRow previousRow = null;
             foreach (var entry in translationTable)
@@ -94,7 +94,7 @@ namespace LemuRivolta.InkTranslate.Editor
                     };
                     if (previousRow == null)
                     {
-                        MainTable.AddTableRow(translationRow);
+                        MainTable.AddTableRowFirst(translationRow);
                     }
                     else
                     {
@@ -107,6 +107,16 @@ namespace LemuRivolta.InkTranslate.Editor
                 SetTranslationCell(translationRow, 2, entry.Languages.GetValueOrDefault(languageCode, null) ?? "");
                 // remember this row
                 previousRow = translationRow;
+            }
+            // check for obsolete translations
+            var existingKeys = translationTable.Select(translationEntry => translationEntry.Key).ToHashSet();
+            foreach (var translationRow in TranslationRows)
+            {
+                var key = GetTranslationRowKey(translationRow);
+                if (!existingKeys.Contains(key))
+                {
+                    UnityEngine.Debug.Log($"key {key} is obsolete");
+                }
             }
             // write the file
             using (var stream = File.Open(GetLanguageInfo().ODSFile.GetPath(), FileMode.OpenOrCreate, FileAccess.ReadWrite))
