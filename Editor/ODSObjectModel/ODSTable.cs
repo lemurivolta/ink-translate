@@ -26,9 +26,9 @@ namespace LemuRivolta.InkTranslate.Editor
             get => tableElement.Descendants(ODSNamespaces.TableTableRow).Select(row => new ODSTableRow(row));
         }
 
-        public void AddTableRow(ODSTableRow row)
+        public void AddTableRowFirst(ODSTableRow row)
         {
-            tableElement.Add(row.Element);
+            tableElement.AddFirst(row.Element);
         }
 
         public void AddTableRowAfter(ODSTableRow row, ODSTableRow after)
