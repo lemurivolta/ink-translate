@@ -1,0 +1,165 @@
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+using static LemuRivolta.InkTranslate.InkTranslateAsset;
+
+namespace LemuRivolta.InkTranslate.Editor
+{
+    public class ODSSerializationFormatHandler2 : SerializationFormatHandler
+    {
+        #region document access
+
+        private ODSDocument odsDocument;
+
+        private ODSTable MainTable => odsDocument
+            .Tables
+            .First(table => table.Name == "Translations");
+
+        private IEnumerable<ODSTableRow> TranslationRows => MainTable
+            .TableRows
+            .Skip(1)
+            .Where(tableRow =>
+                !string.IsNullOrEmpty(GetTranslationRowKey(tableRow)) &&
+                !string.IsNullOrEmpty(GetTranslationRowSource(tableRow)));
+
+        #endregion
+
+        #region interface implementation
+
+        public static ODSSerializationFormatHandler2 Factory(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages) =>
+            new(languageCode, sourceLanguageCode, translationLanguages);
+
+        public ODSSerializationFormatHandler2(string languageCode,
+            string sourceLanguageCode,
+            List<OtherSupportedLanguage> translationLanguages)
+            : base("ODS", languageCode, sourceLanguageCode, translationLanguages) { }
+
+        public static byte[] CreateDefaultODSFile()
+        {
+            var odsPath = Path.GetFullPath("Packages/it.lemurivolta.ink-translate/Editor/SerializationFormats/ODSTemplate.ods");
+            using Stream s = File.OpenRead(odsPath);
+            using MemoryStream ms = new();
+            s.CopyTo(ms);
+            return ms.GetBuffer();
+        }
+
+        protected override Dictionary<string, string> InnerRead()
+        {
+            // open the zip archive stream
+            using var stream = File.OpenRead(GetLanguageInfo().ODSFile.GetPath());
+            // read the ODS document
+            var odsReader = new ODSReader();
+            odsDocument = odsReader.Deserialize(stream);
+            // remove all rows in the Translations table without content
+            // this is especially important when ODS editors like libreoffice add
+            // empty padding covering all lines in a document, with something like:
+            /*
+             * <table:table-row table:style-name="ro1" table:number-rows-repeated="1048568">
+             *      <table:table-cell table:number-columns-repeated="3" />
+             * </table:table-row>
+             */
+            // when we add new translation lines to such a document, we get over the
+            // maximum number of rows and make the document unreadable
+            var rowsToRemove = MainTable
+                                .TableRows
+                                .Where(tableRow => tableRow
+                                    .TableCells
+                                    .Select(tableCell => tableCell.TextContent.Trim().Length)
+                                    .All(contentLength => contentLength == 0))
+                                .ToArray();
+            foreach (var row in rowsToRemove)
+            {
+                row.Remove();
+            }
+            // return the translations contained inside
+            return TranslationRows.ToDictionary(GetTranslationRowKey, GetTranslationRowTarget);
+        }
+
+        protected override void InnerSerialize()
+        {
+            // update the XML document
+            var translationRowsByKey = TranslationRows.ToDictionary(GetTranslationRowKey);
+            foreach (var entry in translationTable)
+            {
+                // get or create the corresponding translation row
+                if (!translationRowsByKey.TryGetValue(entry.Key, out var translationRow))
+                {
+                    MainTable.AddTableRow(translationRow = new()
+                    {
+                        StyleName = "ro2"
+                    });
+                }
+                // get or set the cells inside
+                SetTranslationCell(translationRow, 0, entry.Key, annotation: entry.Notes);
+                SetTranslationCell(translationRow, 1, entry.Languages[sourceLanguageCode], styleName: "ce3");
+                SetTranslationCell(translationRow, 2, entry.Languages.GetValueOrDefault(languageCode, null) ?? "");
+            }
+            // write the file
+            using (var stream = File.Open(GetLanguageInfo().ODSFile.GetPath(), FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            {
+                var odsWriter = new ODSWriter();
+                odsWriter.Serialize(stream, odsDocument);
+            }
+            // print statistics
+            UnityEngine.Debug.Log($"ODS: num translation rows = {MainTable.TableRows.Skip(1).Count()}");
+        }
+
+        #endregion
+
+        #region helper functions
+
+        private void SetTranslationCell(
+            ODSTableRow translationRow, int columnIndex, string content, string styleName = null, string annotation = null)
+        {
+            // handle cell creation / setup
+            if (!translationRow.TryGetCellByIndex(columnIndex, out var cell))
+            {
+                translationRow.SetCellByIndex(columnIndex, cell = new());
+            }
+            cell.ValueType = ODSValueType.String;
+            cell.StyleName = styleName ?? cell.StyleName;
+
+            // handle paragraph inside cell
+            ODSParagraph para;
+            if ((para = cell.Content.OfType<ODSParagraph>().FirstOrDefault()) == null)
+            {
+                cell.AppendContent(para = new());
+            }
+            para.Content = content;
+
+            // handle annotation inside cell
+            ODSAnnotation annoElement = cell.Content.OfType<ODSAnnotation>().FirstOrDefault();
+            if (annotation != null)
+            {
+                if (annoElement == null)
+                {
+                    cell.AppendContent(annoElement = new ODSAnnotation());
+                    annoElement.AppendContent(new ODSParagraph());
+                }
+                annoElement.Content.OfType<ODSParagraph>().First().Content = annotation;
+            }
+            else
+            {
+                var existingAnnotations = cell.Content.OfType<ODSAnnotation>().ToArray();
+                foreach (var existingAnnotation in existingAnnotations)
+                {
+                    existingAnnotation.Remove();
+                }
+            }
+        }
+
+        private string GetTranslationRowKey(ODSTableRow tableRow) => TryOrNull(tableRow, 0);
+        private string GetTranslationRowSource(ODSTableRow tableRow) => TryOrNull(tableRow, 1);
+        private string GetTranslationRowTarget(ODSTableRow tableRow) => TryOrNull(tableRow, 2);
+
+        private string TryOrNull(ODSTableRow tableRow, int index) =>
+            tableRow.TryGetCellByIndex(index, out var cell) ?
+                cell.TextContent.Trim() :
+                null;
+
+        #endregion
+    }
+}
