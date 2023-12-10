@@ -26,7 +26,7 @@ namespace LemuRivolta.InkTranslate.Editor
                 }
                 if (l.ODSFile != null)
                 {
-                    factories.Add(ODSSerializationFormatHandler.Factory);
+                    factories.Add(ODSSerializationFormatHandler2.Factory);
                 }
                 if (l.XLIFFFile != null)
                 {
