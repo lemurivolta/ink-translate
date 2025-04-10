@@ -55,11 +55,24 @@ namespace LemuRivolta.InkTranslate.Editor
                 {
                     return new ODSStyleTableCellProperties(e);
                 }
+                else if (e.Name == ODSNamespaces.StyleTableRowProperties)
+                {
+                    return new ODSStyleTableRowProperties(e);
+                }
                 else
                 {
                     return null;
                 }
             }).Where(e => e != null);
+
+        public IEnumerable<ODSStyleMap> Maps => Element
+            .Descendants(ODSNamespaces.StyleMap)
+            .Select(e => new ODSStyleMap(e));
+
+        public void AppendMap(ODSStyleMap map)
+        {
+            Element.Add(map.Element);
+        }
 
         public void AppendContent(ODSStyleContent content)
         {

@@ -23,13 +23,26 @@ namespace LemuRivolta.InkTranslate.Editor
             .Descendants(ODSNamespaces.StyleStyle)
             .Select(styleElement => new ODSStyle(styleElement));
 
+        public IEnumerable<ODSStyle> AutomaticStyles => OfficeAutomaticStyles
+            .Descendants(ODSNamespaces.StyleStyle)
+            .Select(styleElement => new ODSStyle(styleElement));
+
         public void AppendStyle(ODSStyle style)
         {
             OfficeStyles.Add(style.Element);
         }
 
+        public void AppendAutomaticStyle(ODSStyle style)
+        {
+            OfficeAutomaticStyles.Add(style.Element);
+        }
+
         private XElement OfficeStyles => StylesXDocument
             .Descendants(ODSNamespaces.OfficeStyles)
+            .First();
+
+        private XElement OfficeAutomaticStyles => ContentXDocument
+            .Descendants(ODSNamespaces.OfficeAutomaticStyles)
             .First();
     }
 }

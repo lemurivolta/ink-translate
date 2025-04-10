@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -86,42 +87,123 @@ namespace LemuRivolta.InkTranslate.Editor
             }
         }
 
-        private const string removedTranslationStyleName = "Removed Translation";
+        private const string removedTranslationStyleName = "Removed_20_Translation";
+        private const string baseCellStyle = "Existing_20_Translation";
+        private string thirdColumnStyleName;
 
         private void AddMissingStyles()
         {
-            // get or create "removed translation" style
-            ODSStyle removedStyle;
-            if ((removedStyle = odsDocument.Styles.FirstOrDefault(style => style.Name == removedTranslationStyleName)) == null)
-            {
-                odsDocument.AppendStyle(removedStyle = new()
+            // base style for our cells
+            SetupStyle(baseCellStyle, ODSStyleFamily.TableCell, "Default",
+                setupTableCellProperties: tableCellProperties =>
                 {
-                    Name = removedTranslationStyleName
+                    tableCellProperties.WrapOption = ODSWrapOption.Wrap;
+                    tableCellProperties.VerticalAlign = ODSTableCellVerticalAlign.Middle;
+                },
+                setupTableRowProperties: tableRowProperties =>
+                {
+                    tableRowProperties.UseOptimalRowHeight = true;
+                });
+
+            // style for removed translations
+            SetupStyle(removedTranslationStyleName, ODSStyleFamily.TableCell, baseCellStyle,
+                setupStyleTextProperties: styleTextProperties =>
+                {
+                    styleTextProperties.FontSize = new ODSLengthFontSize(8, ODSSizeUnit.Pt);
+                    styleTextProperties.FontColor = UnityEngine.Color.gray;
+                });
+
+            // style for the third column (conditional formatting based on cell content)
+            var thirdColumnStyle = odsDocument.AutomaticStyles.FirstOrDefault(style =>
+                style.Maps.Any(map => map.ApplyStyleName == "NotOk" && map.Condition == "cell-content()=\"\"") &&
+                style.Maps.Any(map => map.ApplyStyleName == "Ok" && map.Condition == "cell-content()!=\"\"")
+                );
+            if (thirdColumnStyle == null)
+            {
+                var index = (from style in odsDocument.AutomaticStyles
+                             where style.Name.StartsWith("ce")
+                             select int.Parse(style.Name[2..]))
+                             .Max() + 1;
+                thirdColumnStyle = new ODSStyle()
+                {
+                    Name = $"ce{index}",
+                    ParentStyleName = baseCellStyle,
+                    Family = ODSStyleFamily.TableCell,
+                };
+                thirdColumnStyle.AppendMap(new ODSStyleMap()
+                {
+                    Condition = "cell-content()=\"\"",
+                    ApplyStyleName = "NotOk",
+                    BaseCellAddress = "Translations.C2"
+                });
+                thirdColumnStyle.AppendMap(new ODSStyleMap()
+                {
+                    Condition = "cell-content()!=\"\"",
+                    ApplyStyleName = "Ok",
+                    BaseCellAddress = "Translations.C2"
+                });
+                odsDocument.AppendAutomaticStyle(thirdColumnStyle);
+            }
+
+            // force the style of the columns
+            thirdColumnStyleName = thirdColumnStyle.Name;
+            var columns = MainTable.TableColumns.ToArray();
+            if (columns.Length > 0)
+            {
+                columns[0].DefaultCellStyleName = baseCellStyle;
+            }
+            if (columns.Length > 1)
+            {
+                columns[1].DefaultCellStyleName = baseCellStyle;
+            }
+            if (columns.Length > 2)
+            {
+                columns[2].DefaultCellStyleName = "Default";
+            }
+        }
+
+        private void SetupStyle(string styleName, ODSStyleFamily styleFamily, string parentStyleName,
+            Action<ODSStyleTextProperties> setupStyleTextProperties = null,
+            Action<ODSStyleTableCellProperties> setupTableCellProperties = null,
+            Action<ODSStyleTableRowProperties> setupTableRowProperties = null)
+        {
+            ODSStyle style;
+            if ((style = odsDocument.Styles.FirstOrDefault(style => style.Name == styleName)) == null)
+            {
+                odsDocument.AppendStyle(style = new()
+                {
+                    Name = styleName
                 });
             }
-            removedStyle.Family = ODSStyleFamily.TableCell;
-            removedStyle.ParentStyleName = "Default";
-            // get or create its text properties
-            ODSStyleTextProperties styleTextProperties;
-            if ((styleTextProperties = removedStyle.Content.OfType<ODSStyleTextProperties>().FirstOrDefault()) == null)
+            style.Family = styleFamily;
+            style.ParentStyleName = parentStyleName;
+            if (setupStyleTextProperties != null)
             {
-                removedStyle.AppendContent(styleTextProperties = new ODSStyleTextProperties());
+                ODSStyleTextProperties styleTextProperties;
+                if ((styleTextProperties = style.Content.OfType<ODSStyleTextProperties>().FirstOrDefault()) == null)
+                {
+                    style.AppendContent(styleTextProperties = new ODSStyleTextProperties());
+                }
+                setupStyleTextProperties(styleTextProperties);
             }
-            // set or reset the properties of the style
-            styleTextProperties.FontSize = new ODSLengthFontSize(8, ODSSizeUnit.Pt);
-            styleTextProperties.FontColor = UnityEngine.Color.gray;
-
-            // update default style
-            var defaultStyle = odsDocument.Styles.First(style => style.Name == "Default");
-            // get or set its table cell properties
-            ODSStyleTableCellProperties tableCellProperties;
-            if ((tableCellProperties = defaultStyle.Content.OfType<ODSStyleTableCellProperties>().FirstOrDefault()) == null)
+            if (setupTableCellProperties != null)
             {
-                defaultStyle.AppendContent(tableCellProperties = new ODSStyleTableCellProperties());
+                ODSStyleTableCellProperties tableCellProperties;
+                if ((tableCellProperties = style.Content.OfType<ODSStyleTableCellProperties>().FirstOrDefault()) == null)
+                {
+                    style.AppendContent(tableCellProperties = new ODSStyleTableCellProperties());
+                }
+                setupTableCellProperties(tableCellProperties);
             }
-            // set or reset the properties of the style
-            tableCellProperties.WrapOption = ODSWrapOption.Wrap;
-            tableCellProperties.VerticalAlign = ODSTableCellVerticalAlign.Middle;
+            if (setupTableRowProperties != null)
+            {
+                ODSStyleTableRowProperties tableRowProperties;
+                if ((tableRowProperties = style.Content.OfType<ODSStyleTableRowProperties>().FirstOrDefault()) == null)
+                {
+                    style.AppendContent(tableRowProperties = new ODSStyleTableRowProperties());
+                }
+                setupTableRowProperties(tableRowProperties);
+            }
         }
 
         protected override void InnerSerialize()
@@ -149,8 +231,8 @@ namespace LemuRivolta.InkTranslate.Editor
                 }
                 // get or set the cells inside
                 SetTranslationCell(translationRow, 0, entry.Key, annotation: entry.Notes);
-                SetTranslationCell(translationRow, 1, entry.Languages[sourceLanguageCode], styleName: "ce3");
-                SetTranslationCell(translationRow, 2, entry.Languages.GetValueOrDefault(languageCode, null) ?? "");
+                SetTranslationCell(translationRow, 1, entry.Languages[sourceLanguageCode]);
+                SetTranslationCell(translationRow, 2, entry.Languages.GetValueOrDefault(languageCode, null) ?? "", styleName: thirdColumnStyleName);
                 // remember this row
                 previousRow = translationRow;
             }
@@ -191,7 +273,7 @@ namespace LemuRivolta.InkTranslate.Editor
                 translationRow.SetCellByIndex(columnIndex, cell = new());
             }
             cell.ValueType = ODSValueType.String;
-            cell.StyleName = styleName ?? cell.StyleName;
+            cell.StyleName = styleName;
 
             // handle paragraph inside cell
             ODSParagraph para;

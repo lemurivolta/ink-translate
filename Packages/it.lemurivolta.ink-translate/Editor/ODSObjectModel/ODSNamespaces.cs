@@ -9,9 +9,11 @@ namespace LemuRivolta.InkTranslate.Editor
         public static readonly XName TableTable = Table + "table";
         public static readonly XName TableName = Table + "name";
         public static readonly XName TableTableRow = Table + "table-row";
+        public static readonly XName TableTableColumn = Table + "table-column";
         public static readonly XName TableTableCell = Table + "table-cell";
         public static readonly XName TableNumberColumnsRepeated = Table + "number-columns-repeated";
         public static readonly XName TableStyleName = Table + "style-name";
+        public static readonly XName TableDefaultCellStyleName = Table + "default-cell-style-name";
 
         public static readonly XNamespace Text =
             "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
@@ -22,6 +24,7 @@ namespace LemuRivolta.InkTranslate.Editor
         public static readonly XName OfficeValueType = Office + "value-type";
         public static readonly XName OfficeAnnotation = Office + "annotation";
         public static readonly XName OfficeStyles = Office + "styles";
+        public static readonly XName OfficeAutomaticStyles = Office + "automatic-styles";
 
         public static readonly XNamespace Calcext =
             "urn:org:documentfoundation:names:experimental:calc:xmlns:calcext:1.0";
@@ -34,8 +37,14 @@ namespace LemuRivolta.InkTranslate.Editor
         public static readonly XName StyleFamily = Style + "family";
         public static readonly XName StyleParentStyleName = Style + "parent-style-name";
         public static readonly XName StyleTextProperties = Style + "text-properties";
+        public static readonly XName StyleTableRowProperties = Style + "table-row-properties";
         public static readonly XName StyleTableCellProperties = Style + "table-cell-properties";
         public static readonly XName StyleVerticalAlign = Style + "vertical-align";
+        public static readonly XName StyleUseOptimalRowHeight = Style + "use-optimal-row-height";
+        public static readonly XName StyleMap = Style + "map";
+        public static readonly XName StyleCondition = Style + "condition";
+        public static readonly XName StyleApplyStyleName = Style + "apply-style-name";
+        public static readonly XName StyleBaseCellAddress = Style + "base-cell-address";
 
         public static readonly XNamespace Fo =
             "urn:oasis:names:tc:opendocument:xmlns:xsl-fo-compatible:1.0";
