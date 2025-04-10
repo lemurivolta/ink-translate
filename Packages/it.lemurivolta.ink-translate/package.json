@@ -1,6 +1,6 @@
  {
   "name": "it.lemurivolta.ink-translate",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "displayName": "Ink Translate",
   "description": "A translation manager for Ink games. This package allows to extract all strings from an Ink project, and synchronize translations of these strings through TSV (tab-separated CSV), ODS (Spreadsheets) and XLIFF (a dedicated format for Computer Assisted Translator programs).",
   "unity": "2021.2",
