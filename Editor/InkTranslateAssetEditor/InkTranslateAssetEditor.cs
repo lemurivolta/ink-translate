@@ -170,7 +170,7 @@ namespace LemuRivolta.InkTranslate.Editor
         private void CreateDefaultODSFile(int i)
         {
             InkTranslateAsset.OtherSupportedLanguage l = Asset.OtherSupportedLanguages[i];
-            var documentContent = ODSSerializationFormatHandler2.CreateDefaultODSFile();
+            var documentContent = ODSSerializationFormatHandler.CreateDefaultODSFile();
             var o = CreateFile(
                 "_" + l.LanguageCode,
                 "ods",

@@ -12,7 +12,7 @@ namespace LemuRivolta.InkTranslate.Editor
 
         public override void VisitFile(string filename, string contents)
         {
-            filename = filename.Replace("\\", "/");
+            filename = filename.NormalizeInclude();
             fileContents[filename] = contents.NormalizeNewlines().Split('\n');
         }
     }

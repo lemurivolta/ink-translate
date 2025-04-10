@@ -25,6 +25,15 @@ namespace LemuRivolta.InkTranslate.Editor
                     System.IO.Path.AltDirectorySeparatorChar);
 
         /// <summary>
+        /// Return an include specifier (e.g.: Objects/Variables.ink) in a normalized form, regarding path
+        /// separators.
+        /// </summary>
+        /// <param name="include">The include specifier.</param>
+        /// <returns>A normalized version of the include specifier.</returns>
+        public static string NormalizeInclude(this string include) =>
+            include.Replace("\\", "/");
+
+        /// <summary>
         /// Resolve the path of an included ink file relative to the main project file.
         /// </summary>
         /// <param name="includeName">The path of the included file.</param>
@@ -71,11 +80,11 @@ namespace LemuRivolta.InkTranslate.Editor
             if (System.IO.Path.IsPathFullyQualified(includeName))
             {
                 Assert.IsTrue(includeName.StartsWith(mainFileDirectory));
-                return includeName[(mainFileDirectory.Length + 1)..];
+                return includeName[(mainFileDirectory.Length + 1)..].NormalizeInclude();
             }
             else
             {
-                return includeName;
+                return includeName.NormalizeInclude();
             }
         }
 
