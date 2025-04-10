@@ -30,12 +30,12 @@ jobs:
 
     steps:
       # Checkout sandbox project
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
       # Cache
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         with:
           path: Library
           key: Library-${{ matrix.version }}-${{ github.sha }}
@@ -45,7 +45,7 @@ jobs:
 
       # Run tests
       - name: "Run tests"
-        uses: game-ci/unity-test-runner@v2
+        uses: game-ci/unity-test-runner@v4
         with:
           customImage: mobsakai/unity3d:${{ matrix.version }}
           customParameters: -nographics
@@ -61,7 +61,7 @@ jobs:
     name: update upm branch
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
     - name: update upm branch
