@@ -18,7 +18,7 @@ jobs:
           VERSIONS=`npx unity-changeset list --versions --all --latest-patch --min 2022.3.1f1 --json`
           echo "==== Target Unity Versions ===="
           echo "${VERSIONS}"
-          echo "::set-output name=versions::${VERSIONS}"
+          echo "versions=${VERSIONS}" >> $GITHUB_OUTPUT
 
   test:
     runs-on: ubuntu-latest
