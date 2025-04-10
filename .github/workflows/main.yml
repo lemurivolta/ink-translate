@@ -52,8 +52,11 @@ jobs:
           # unityVersion: ${{ matrix.version }}
           checkName: ${{ matrix.version }} Test Results
           githubToken: ${{ github.token }}
+          projectPath: Packages/it.lemurivolta.ink-translate
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
 
   # Taken from: https://github.com/dbrizov/NaughtyAttributes/blob/master/.github/workflows/ci.yml
   split-upm:
