@@ -43,6 +43,23 @@ public class FileLinesTests
         }));
     }
 
+    [Test]
+    public void TestNormalizePaths()
+    {
+        FileLines fileLines = new();
+
+        new InkVisitorParser()
+            .RegisterInkVisitor(fileLines)
+            .WalkTree(pathManager.GetPath("/test-normalize.inkfile"));
+
+        Assert.That(fileLines.Filenames, Is.EquivalentTo(new[]
+        {
+            "test-normalize.inkfile",
+            "subdir/test-normalize-included1.inkfile",
+            "subdir/test-normalize-included2.inkfile"
+        }));
+    }
+
     /// <summary>
     /// Test that we correctly track files that have no content expect for the include.
     /// </summary>

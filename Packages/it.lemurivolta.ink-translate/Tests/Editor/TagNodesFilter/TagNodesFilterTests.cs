@@ -1,3 +1,4 @@
+using System.Linq;
 using LemuRivolta.InkTranslate.Editor;
 
 using NUnit.Framework;
@@ -56,5 +57,24 @@ public class TagNodesFilterTests
         Assert.That(fileTags[2][0], Is.EqualTo("note1"));
         Assert.That(fileTags[5].Count, Is.EqualTo(1));
         Assert.That(fileTags[5][0], Is.EqualTo("note2 with spaces"));
+    }
+
+    [Test]
+    public void CanNormalizePaths()
+    {
+        TagNodesFilter tagNodesFilter = new("tnote:");
+
+        new InkVisitorParser()
+            .RegisterInkVisitor(tagNodesFilter)
+            .WalkTree(pathManager.GetPath("/normalize-root.inkfile"));
+
+        var tags = tagNodesFilter.Tags;
+        Assert.That(tags.Keys, Is.EquivalentTo(new[]
+        {
+            "subdir/normalize-child.inkfile",
+            "subdir/normalize-child-2.inkfile"
+        }));
+        Assert.That(tags["subdir/normalize-child.inkfile"][2].ToArray(), Is.EquivalentTo(new[] { "note1" }));
+        Assert.That(tags["subdir/normalize-child-2.inkfile"][2].ToArray(), Is.EquivalentTo(new[] { "note2" }));
     }
 }

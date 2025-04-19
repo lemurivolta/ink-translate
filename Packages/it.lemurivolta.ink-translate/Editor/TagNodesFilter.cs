@@ -64,7 +64,7 @@ namespace LemuRivolta.InkTranslate.Editor
                 // it is: save it!
                 var d = o.debugMetadata;
                 string mainFileRelativePath =
-                    d.fileName.MakeInkPathRelative(mainFilePath);
+                    d.fileName.MakeInkPathRelativeTo(mainFilePath);
                 tags.GetValueOrCreateDefault(mainFileRelativePath, () => new())
                     .GetValueOrCreateDefault(d.startLineNumber, () => new())
                     .Add(t.text[translationNotePrefix.Length..].Trim());

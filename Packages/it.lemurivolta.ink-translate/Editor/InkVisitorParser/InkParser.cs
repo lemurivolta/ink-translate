@@ -103,7 +103,7 @@ namespace LemuRivolta.InkTranslate.Editor
             public string LoadInkFileContents(string fullFilename)
             {
                 var content = File.ReadAllText(fullFilename);
-                var filename = fullFilename.MakeInkPathRelative(mainFilePath);
+                var filename = fullFilename.MakeInkPathRelativeTo(mainFilePath);
                 foreach (var visitor in inkVisitors)
                 {
                     visitor.VisitFile(filename, content);

@@ -33,6 +33,30 @@ public class TextNodesFilterTests
         Assert.AreEqual("Just one line.", textNodes["one-line.inkfile"][1][0].text);
     }
 
+    [Test]
+    public void CanNormalizePaths()
+    {
+        TextNodesFilter textNodesFilter = new(false);
+
+        new InkVisitorParser()
+            .RegisterInkVisitor(textNodesFilter)
+            .WalkTree(pathManager.GetPath("/normalize-root.inkfile"));
+
+        var textNodes = textNodesFilter.TextNodesByLine;
+        Assert.Contains("subdir/normalize-child.inkfile", textNodes.Keys);
+        Assert.Contains("subdir/normalize-child-2.inkfile", textNodes.Keys);
+
+        var child1 = textNodes["subdir/normalize-child.inkfile"];
+        Assert.Contains(1, child1.Keys);
+        Assert.AreEqual(1, child1[1].Count);
+        Assert.AreEqual("Just one line.", child1[1][0].text);
+
+        var child2 = textNodes["subdir/normalize-child-2.inkfile"];
+        Assert.Contains(1, child2.Keys);
+        Assert.AreEqual(1, child2[1].Count);
+        Assert.AreEqual("Another line.", child2[1][0].text);
+    }
+
     /// <summary>
     /// Test that TextNodesFilter can parse multiple lines interspersed with other content.
     /// </summary>

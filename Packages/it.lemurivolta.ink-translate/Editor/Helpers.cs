@@ -57,7 +57,7 @@ namespace LemuRivolta.InkTranslate.Editor
         /// var includeName =
         ///     "c:\\chapter1\\included.ink";
         /// var relativeName = includeName
-        ///     .MakeInkPathRelative("c:\\main.ink")
+        ///     .MakeInkPathRelativeTo("c:\\main.ink")
         /// relativeName == "chapter1\\included.ink"
         /// </code>
         /// and
@@ -65,14 +65,14 @@ namespace LemuRivolta.InkTranslate.Editor
         /// var includeName =
         ///     "chapter1\\included.ink";
         /// var relativeName = includeName
-        ///     .MakeInkPathRelative("c:\\main.ink")
+        ///     .MakeInkPathRelativeTo("c:\\main.ink")
         /// relativeName == "chapter1\\included.ink"
         /// </code>
         /// </summary>
         /// <param name="includeName"></param>
         /// <param name="mainFilePath"></param>
         /// <returns></returns>
-        public static string MakeInkPathRelative(
+        public static string MakeInkPathRelativeTo(
             this string includeName,
             string mainFilePath)
         {
@@ -80,7 +80,9 @@ namespace LemuRivolta.InkTranslate.Editor
             if (System.IO.Path.IsPathFullyQualified(includeName))
             {
                 Assert.IsTrue(includeName.StartsWith(mainFileDirectory));
-                return includeName[(mainFileDirectory.Length + 1)..].NormalizeInclude();
+                return includeName[(mainFileDirectory.Length + 1)..]
+                    .NormalizeInclude()
+                    ;
             }
             else
             {
