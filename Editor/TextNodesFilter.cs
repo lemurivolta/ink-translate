@@ -78,7 +78,9 @@ namespace LemuRivolta.InkTranslate.Editor
                 Assert.AreEqual(d.startLineNumber, d.endLineNumber,
                     "Unsupported multiline text node"); // should never happen, but...
                 string mainFileRelativePath =
-                    d.fileName.MakeInkPathRelative(mainFilePath);
+                    d.fileName
+                    .MakeInkPathRelativeTo(mainFilePath)
+                    ;
                 textNodesByLine
                     .GetValueOrCreateDefault(mainFileRelativePath, () => new())
                     .GetValueOrCreateDefault(d.startLineNumber, () => new())

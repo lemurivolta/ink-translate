@@ -1,0 +1,2 @@
+INCLUDE subdir/test-normalize-included1.inkfile
+INCLUDE subdir\test-normalize-included2.inkfile

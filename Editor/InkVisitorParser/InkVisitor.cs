@@ -19,7 +19,7 @@ namespace LemuRivolta.InkTranslate.Editor
         /// Called when we visit a file during parsing.
         /// </summary>
         /// <param name="filename">The filename, expressed as a main ink file relative path.</param>
-        /// <param name="contents">The fuill contents of the file.</param>
+        /// <param name="contents">The full contents of the file.</param>
         public virtual void VisitFile(string filename, string contents) { }
 
         /// <summary>
